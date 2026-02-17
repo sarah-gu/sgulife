@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fafafa;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ---- Base ---- */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* ---- Focus-visible for keyboard accessibility ---- */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #a1a1aa;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- Liquid glass bubble ---- */
+
+.glass-bubble {
+  filter: drop-shadow(0 2px 12px rgba(255, 255, 255, 0.35));
+}
+
+.glass-border {
+  border-radius: 9999px;
+  background: conic-gradient(
+    from var(--shimmer-angle, 0deg),
+    transparent 0%,
+    rgba(167, 199, 231, 0.7) 8%,
+    rgba(255, 255, 255, 0.8) 14%,
+    transparent 20%,
+    rgba(180, 210, 170, 0.5) 32%,
+    rgba(255, 220, 160, 0.5) 45%,
+    transparent 55%,
+    rgba(190, 170, 210, 0.5) 65%,
+    rgba(167, 199, 231, 0.6) 75%,
+    transparent 85%
+  );
+  animation: shimmer 4s linear infinite, wobble 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { --shimmer-angle: 0deg; }
+  100% { --shimmer-angle: 360deg; }
+}
+
+@keyframes wobble {
+  0%, 100% {
+    border-radius: 9999px;
+    transform: scale(1);
+  }
+  25% {
+    border-radius: 48% 52% 55% 45% / 50% 45% 55% 50%;
+    transform: scale(1.01);
+  }
+  50% {
+    border-radius: 52% 48% 45% 55% / 55% 50% 50% 45%;
+    transform: scale(0.99);
+  }
+  75% {
+    border-radius: 45% 55% 50% 50% / 48% 55% 45% 52%;
+    transform: scale(1.005);
+  }
+}
+
+/* Register the custom property for conic-gradient animation */
+@property --shimmer-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
