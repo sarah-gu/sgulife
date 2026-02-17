@@ -12,13 +12,13 @@ export default function Home() {
   return (
     <main className="relative">
       {/* Hero section — full viewport */}
-      <section className="relative h-screen w-screen overflow-hidden">
+      <section className="relative mt-8 h-[calc(100vh-32px)] w-screen overflow-hidden">
         <Image
           src="/sgu-life.png"
           alt="sgu-life: a watercolor illustration of a girl walking beside a river with paper boats, a tree with a small door, and constellations in the night sky"
           fill
           priority
-          className="object-cover object-center"
+          className="object-contain object-center"
           draggable={false}
         />
 

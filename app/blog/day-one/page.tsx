@@ -8,7 +8,7 @@ export default function DayOnePost() {
   return (
     <main className="mx-auto max-w-2xl px-6 pb-24 pt-28 sm:px-8">
       <Link
-        href="/blog"
+        href="/"
         className="text-sm text-zinc-400 transition-colors hover:text-zinc-600"
       >
         &larr; Back to Blog
