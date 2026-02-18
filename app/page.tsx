@@ -13,12 +13,22 @@ export default function Home() {
     <main className="relative">
       {/* Hero section — full viewport */}
       <section className="relative mt-8 h-[calc(100vh-32px)] w-screen overflow-hidden">
+        {/* Desktop image */}
         <Image
           src="/sgu-life.png"
           alt="sgu-life: a watercolor illustration of a girl walking beside a river with paper boats, a tree with a small door, and constellations in the night sky"
           fill
           priority
-          className="object-contain object-center"
+          className="hidden object-contain object-center sm:block"
+          draggable={false}
+        />
+        {/* Mobile image */}
+        <Image
+          src="/sgu-life-mobile.png"
+          alt="sgu-life: a watercolor illustration of a girl walking beside a river with paper boats, a tree with a small door, and constellations in the night sky"
+          fill
+          priority
+          className="object-contain object-center sm:hidden"
           draggable={false}
         />
 
