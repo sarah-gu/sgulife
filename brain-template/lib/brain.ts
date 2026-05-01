@@ -1,4 +1,4 @@
-// Brain hero — structural + math constants, types, and palette.
+// Brain hero - structural + math constants, types, and palette.
 // Dynamic content (hub stats, neuron synthesis, floating thoughts, health)
 // lives in `lib/brain-data.server.ts` and is loaded at request time so the
 // brain stays in sync with the wiki as it grows.
@@ -27,15 +27,15 @@ export function cortexRadius(dx: number, dy: number, dz: number): number {
     b = 1.22,
     c = 0.88;
   let r =
-    1 / Math.sqrt((dx * dx) / (a * a) + (dy * dy) / (b * b) + (dz * dz) / (c * c));
+    1 /
+    Math.sqrt((dx * dx) / (a * a) + (dy * dy) / (b * b) + (dz * dz) / (c * c));
 
   if (dy > 0) r *= 1.0 + 0.04 * dy;
   else r *= 1.0 + 0.05 * dy;
 
   if (dz < -0.45) r *= 1.0 - 0.18 * (-dz - 0.45);
 
-  const lateralLow =
-    Math.max(0, Math.abs(dx) - 0.45) * Math.max(0, -dz - 0.05);
+  const lateralLow = Math.max(0, Math.abs(dx) - 0.45) * Math.max(0, -dz - 0.05);
   r += 0.12 * lateralLow;
 
   const sulci =
@@ -57,7 +57,8 @@ export function cerebellumRadius(dx: number, dy: number, dz: number): number {
     b = 0.85,
     c = 0.75;
   let r =
-    1 / Math.sqrt((dx * dx) / (a * a) + (dy * dy) / (b * b) + (dz * dz) / (c * c));
+    1 /
+    Math.sqrt((dx * dx) / (a * a) + (dy * dy) / (b * b) + (dz * dz) / (c * c));
   r += 0.04 * Math.sin(dy * 18 + dx * 4) + 0.03 * Math.sin(dz * 14);
   return r * CEREB_RADIUS;
 }
@@ -75,7 +76,7 @@ export function fissureKeep(x: number, y: number, z: number): number {
 // ── Hubs ────────────────────────────────────────────────────────────────
 export type HubId = "ideas" | "journal" | "health" | "people" | "travel";
 
-// Structural — direction, region, label. Stat + recent come from the loader.
+// Structural - direction, region, label. Stat + recent come from the loader.
 export type HubBase = {
   id: HubId;
   label: string;

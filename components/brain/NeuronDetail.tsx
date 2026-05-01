@@ -180,9 +180,7 @@ function NeuronFooterLink({
         gap: 4,
       }}
     >
-      <span className="hd-eyebrow">
-        {isNext ? "next →" : "← previous"}
-      </span>
+      <span className="hd-eyebrow">{isNext ? "next →" : "← previous"}</span>
       <span
         style={{
           fontFamily: "var(--font-serif)",
@@ -279,10 +277,7 @@ function HubTitle({
   summary?: string;
 }) {
   return (
-    <div
-      className="hd-pad"
-      style={{ paddingTop: 16, paddingBottom: 28 }}
-    >
+    <div className="hd-pad" style={{ paddingTop: 16, paddingBottom: 28 }}>
       <div className="hd-eyebrow" style={{ marginBottom: 14 }}>
         {eyebrow}
       </div>
@@ -323,14 +318,8 @@ function HubTitle({
 function AboutView({ about }: { about: AboutDetail }) {
   return (
     <>
-      <HubTitle
-        eyebrow={about.name.toLowerCase()}
-        headline={about.tagline}
-      />
-      <div
-        className="hd-pad hd-about-grid"
-        style={{ paddingBottom: 80 }}
-      >
+      <HubTitle eyebrow={about.name.toLowerCase()} headline={about.tagline} />
+      <div className="hd-pad hd-about-grid" style={{ paddingBottom: 80 }}>
         <div className="hd-card" style={{ padding: 18, overflow: "hidden" }}>
           <div
             style={{
@@ -463,7 +452,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
     <>
       <HubTitle
         eyebrow={`${items.length} roles`}
-        headline="Seven chapters, MITRE to Citadel — and now building something new."
+        headline="Seven chapters, MITRE to Citadel - and now building something new."
         summary="Three years of internships across Big Tech, defense, and pre-seed startups, then Citadel for a year. Left in April 2026 to start something new. The thread: data and ML systems that real people actually use."
       />
       <div
@@ -600,10 +589,7 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
         headline="Hackathon wins, side bets, and one Senior Scramble."
         summary="From a healthcare-supply-chain startup that won $15K, to Columbia's 2024 Senior Scramble (700+ users), to the rotational-grazing app I built on dorm monitors after getting robbed at TreeHacks."
       />
-      <div
-        className="hd-pad hd-projects-grid"
-        style={{ paddingBottom: 80 }}
-      >
+      <div className="hd-pad hd-projects-grid" style={{ paddingBottom: 80 }}>
         {items.map((p) => (
           <ProjectCard key={p.name} project={p} />
         ))}
@@ -872,7 +858,12 @@ function BrainBackdrop() {
     >
       <canvas
         ref={ref}
-        style={{ position: "absolute", inset: 0, maxWidth: "100%", maxHeight: "100%" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          maxWidth: "100%",
+          maxHeight: "100%",
+        }}
       />
     </div>
   );

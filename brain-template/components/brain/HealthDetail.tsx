@@ -96,7 +96,9 @@ export default function HealthDetail({
         </div>
       </div>
 
-      <div style={{ padding: "24px 56px 48px", position: "relative", zIndex: 1 }}>
+      <div
+        style={{ padding: "24px 56px 48px", position: "relative", zIndex: 1 }}
+      >
         <div className="hd-eyebrow" style={{ marginBottom: 14 }}>
           Neuron · Health metrics · {health.totalSessions} sessions
         </div>
@@ -156,7 +158,7 @@ export default function HealthDetail({
               </div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
                 <span className="hd-num" style={{ fontSize: 44 }}>
-                  {avgOf(health.hrSeries.map((p) => p.avgHR)) || "—"}
+                  {avgOf(health.hrSeries.map((p) => p.avgHR)) || "-"}
                 </span>
                 <span
                   style={{
@@ -288,7 +290,7 @@ function StatStrip({ health }: { health: HealthData }) {
       />
       <StatTile
         label="Last run pace"
-        value={lastRun?.pace?.split("/")[0] ?? "—"}
+        value={lastRun?.pace?.split("/")[0] ?? "-"}
         unit="/mi"
         delta={
           lastRun
@@ -299,7 +301,7 @@ function StatStrip({ health }: { health: HealthData }) {
       />
       <StatTile
         label="Avg HR · 14 runs"
-        value={avgHR14 ? String(avgHR14) : "—"}
+        value={avgHR14 ? String(avgHR14) : "-"}
         unit="bpm"
         delta=""
         tone="neutral"
@@ -325,8 +327,8 @@ function StatTile({
     tone === "good"
       ? "rgba(150, 230, 200, 0.8)"
       : tone === "bad"
-      ? "rgba(220, 180, 140, 0.8)"
-      : "rgba(190, 220, 255, 0.5)";
+        ? "rgba(220, 180, 140, 0.8)"
+        : "rgba(190, 220, 255, 0.5)";
   return (
     <div className="hd-card" style={{ padding: "20px 22px" }}>
       <div className="hd-eyebrow" style={{ marginBottom: 10 }}>
@@ -394,7 +396,10 @@ function HRChart({
   const ys = (v: number) =>
     pad.t + (1 - (v - ymin) / (ymax - ymin)) * (H - pad.t - pad.b);
   const path = data
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${xs(i).toFixed(1)} ${ys(p.avgHR).toFixed(1)}`)
+    .map(
+      (p, i) =>
+        `${i === 0 ? "M" : "L"} ${xs(i).toFixed(1)} ${ys(p.avgHR).toFixed(1)}`,
+    )
     .join(" ");
   const fill = `${path} L ${xs(data.length - 1).toFixed(1)} ${ys(ymin).toFixed(1)} L ${xs(0).toFixed(1)} ${ys(ymin).toFixed(1)} Z`;
 
@@ -411,15 +416,15 @@ function HRChart({
   });
   const N = data.length;
   const m = N > 1 ? (N * sxy - sx * sy) / (N * sxx - sx * sx) : 0;
-  const b = N > 1 ? (sy - m * sx) / N : data[0]?.avgHR ?? 0;
+  const b = N > 1 ? (sy - m * sx) / N : (data[0]?.avgHR ?? 0);
 
   // Highlight the highest-avgHR run in the window.
   const halfIdx = data
     .map((d, i) => ({ d, i }))
-    .reduce(
-      (best, cur) => (cur.d.avgHR > best.d.avgHR ? cur : best),
-      { d: data[0], i: 0 }
-    );
+    .reduce((best, cur) => (cur.d.avgHR > best.d.avgHR ? cur : best), {
+      d: data[0],
+      i: 0,
+    });
 
   // Gridlines at z2/z3/z4 boundaries.
   const zoneLines = [
@@ -522,7 +527,9 @@ function ActivityGrid({ records }: { records: WorkoutRecord[] }) {
     return "linear-gradient(180deg, rgba(190,220,255,0.4), rgba(190,220,255,0.1))";
   };
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 100 }}>
+    <div
+      style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 100 }}
+    >
       {recent14.map((r, i) => {
         const dur = r.durationMin || 30;
         const pct = Math.max(0.12, dur / max);
@@ -699,14 +706,14 @@ function SignalRow({ record }: { record: WorkoutRecord }) {
     record.type === "run"
       ? hrTag(record.avgHR)
       : record.type === "studio"
-      ? "studio"
-      : record.type === "strength"
-      ? "strength"
-      : record.type === "ride"
-      ? "ride"
-      : record.type === "hike"
-      ? "hike"
-      : "log";
+        ? "studio"
+        : record.type === "strength"
+          ? "strength"
+          : record.type === "ride"
+            ? "ride"
+            : record.type === "hike"
+              ? "hike"
+              : "log";
   const value = (() => {
     if (record.distanceMi && record.pace) {
       return `${record.distanceMi.toFixed(2)} mi`;
@@ -716,7 +723,7 @@ function SignalRow({ record }: { record: WorkoutRecord }) {
       const m = Math.round(record.durationMin % 60);
       return h > 0 ? `${h}h ${m}m` : `${m} min`;
     }
-    return record.distanceMi ? `${record.distanceMi.toFixed(2)} mi` : "—";
+    return record.distanceMi ? `${record.distanceMi.toFixed(2)} mi` : "-";
   })();
   return (
     <>

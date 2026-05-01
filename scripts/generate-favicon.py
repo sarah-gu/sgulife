@@ -249,9 +249,9 @@ for i in range(len(px)):
         buf[y0:y0 + KS, x0:x0 + KS, 1] += sub * cols[i, 1]
         buf[y0:y0 + KS, x0:x0 + KS, 2] += sub * cols[i, 2]
 
-# Modest boost — keep dots distinct rather than blowing out to a blob.
+# Modest boost - keep dots distinct rather than blowing out to a blob.
 buf *= 1.65
-# Filmic-ish tonemap with soft knee — bright cores saturate to white.
+# Filmic-ish tonemap with soft knee - bright cores saturate to white.
 buf = 1.0 - np.exp(-buf)
 
 # Slight overall blue tint lift in highlights to match the icy palette.
@@ -262,7 +262,7 @@ particles_rgb = np.clip(np.power(buf, 1 / 1.05), 0, 1)
 particles_8 = (particles_rgb * 255).astype(np.uint8)
 particles_img = Image.fromarray(particles_8, mode="RGB")
 
-# Subtle outer bloom — just enough to suggest a glow halo, not flood.
+# Subtle outer bloom - just enough to suggest a glow halo, not flood.
 bloom = particles_img.filter(ImageFilter.GaussianBlur(radius=4))
 bloom_arr = np.asarray(bloom).astype(np.float32) / 255.0
 combined = np.clip(particles_rgb + bloom_arr * 0.18, 0, 1)
@@ -270,7 +270,7 @@ combined_8 = (combined * 255).astype(np.uint8)
 particles_img = Image.fromarray(combined_8, mode="RGB")
 
 # Compose onto the same dark navy as the page background (#02040a).
-BG = (5, 8, 16)  # #050810 — slightly lighter than #02040a so brain reads
+BG = (5, 8, 16)  # #050810 - slightly lighter than #02040a so brain reads
 bg = Image.new("RGB", (W, H), BG)
 # Treat particle image as additive: use it as a screen-blend onto bg.
 bg_arr = np.asarray(bg).astype(np.float32) / 255.0
@@ -281,7 +281,7 @@ blended_8 = (np.clip(blended, 0, 1) * 255).astype(np.uint8)
 flat = Image.fromarray(blended_8, mode="RGB")
 
 # Mask the corners with a soft rounded square so the icon reads as an icon
-# (not a photo) — but keep most of the square so the brain isn't cropped.
+# (not a photo) - but keep most of the square so the brain isn't cropped.
 mask = Image.new("L", (W, H), 0)
 from PIL import ImageDraw
 draw = ImageDraw.Draw(mask)
@@ -291,7 +291,7 @@ big = Image.new("RGBA", (W, H), (0, 0, 0, 0))
 flat_rgba = flat.convert("RGBA")
 big.paste(flat_rgba, (0, 0), mask)
 
-# Build multi-size .ico — pass explicit sizes so PIL embeds all of them.
+# Build multi-size .ico - pass explicit sizes so PIL embeds all of them.
 big.save(
     OUT,
     format="ICO",

@@ -15,7 +15,7 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
-const SITE_TITLE = "Sarah Gu — software engineer & builder";
+const SITE_TITLE = "Sarah Gu - software engineer & builder";
 const SITE_DESCRIPTION =
   "Columbia CS '24 · ex-Citadel Securities · building something new in NYC.";
 const SITE_URL = "https://sgu.life";
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
         url: "/sgu-life.png",
         width: 1249,
         height: 679,
-        alt: "sgu.life — Sarah Gu's interactive brain portfolio",
+        alt: "sgu.life - Sarah Gu's interactive brain portfolio",
       },
     ],
     type: "website",

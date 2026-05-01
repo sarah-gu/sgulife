@@ -17,7 +17,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "brain",
-  description: "Your second mind — a brain you can traverse.",
+  description: "Your second mind - a brain you can traverse.",
 };
 
 export default function RootLayout({

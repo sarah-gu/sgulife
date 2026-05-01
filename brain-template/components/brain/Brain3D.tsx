@@ -55,7 +55,7 @@ export default function Brain3D({
       32,
       initialRect.width / initialRect.height,
       0.1,
-      1000
+      1000,
     );
     camera.position.set(0, 0, 4.6);
 
@@ -89,7 +89,7 @@ export default function Brain3D({
     };
     const sprite = makeSprite();
 
-    // Seeded RNG — stable cluster layout across reloads.
+    // Seeded RNG - stable cluster layout across reloads.
     const rng = (() => {
       let s = 17;
       return () => {
@@ -140,10 +140,12 @@ export default function Brain3D({
         sizeRoll < 0.7
           ? 0.045 + rng() * 0.025
           : sizeRoll < 0.93
-          ? 0.075 + rng() * 0.03
-          : 0.105 + rng() * 0.03;
+            ? 0.075 + rng() * 0.03
+            : 0.105 + rng() * 0.03;
       const count = Math.round(
-        PARTICLES_PER_CLUSTER_AVG * (0.55 + rng() * 0.9) * (sigma > 0.085 ? 1.5 : 1)
+        PARTICLES_PER_CLUSTER_AVG *
+          (0.55 + rng() * 0.9) *
+          (sigma > 0.085 ? 1.5 : 1),
       );
       cortexClusters.push({ cx, cy, cz, sigma, count, kind: "cortex" });
     }
@@ -159,7 +161,7 @@ export default function Brain3D({
         cz: CEREB_CENTER[2] + dz * R * u,
         sigma: 0.03 + rng() * 0.025,
         count: Math.round(
-          PARTICLES_PER_CLUSTER_AVG * 0.6 * (0.6 + rng() * 0.7)
+          PARTICLES_PER_CLUSTER_AVG * 0.6 * (0.6 + rng() * 0.7),
         ),
         kind: "cereb",
       });
@@ -174,7 +176,12 @@ export default function Brain3D({
     const colors = new Float32Array(3 * totalEst);
     let ptr = 0;
 
-    const writePoint = (x: number, y: number, z: number, kind: "cortex" | "cereb") => {
+    const writePoint = (
+      x: number,
+      y: number,
+      z: number,
+      kind: "cortex" | "cereb",
+    ) => {
       if (ptr * 3 + 2 >= positions.length) return;
       positions[ptr * 3] = x;
       positions[ptr * 3 + 1] = y;
@@ -245,11 +252,11 @@ export default function Brain3D({
     const geom = new THREE.BufferGeometry();
     geom.setAttribute(
       "position",
-      new THREE.BufferAttribute(positions.slice(0, ptr * 3), 3)
+      new THREE.BufferAttribute(positions.slice(0, ptr * 3), 3),
     );
     geom.setAttribute(
       "color",
-      new THREE.BufferAttribute(colors.slice(0, ptr * 3), 3)
+      new THREE.BufferAttribute(colors.slice(0, ptr * 3), 3),
     );
     const mat = new THREE.PointsMaterial({
       size: POINT_SIZE,
@@ -293,7 +300,7 @@ export default function Brain3D({
       s.position.set(
         h.pos[0] * BRAIN_SCALE,
         h.pos[1] * BRAIN_SCALE,
-        h.pos[2] * BRAIN_SCALE
+        h.pos[2] * BRAIN_SCALE,
       );
       s.userData.idx = i;
       hubGroup.add(s);
@@ -439,8 +446,7 @@ export default function Brain3D({
         hubScreen.map((h) => {
           const cat = hubs[h.idx];
           const isActive = h.idx === activeHub || h.idx === expandedHub;
-          const opacity =
-            h.z < 0.55 ? 1 : Math.max(0, 1 - (h.z - 0.55) * 4);
+          const opacity = h.z < 0.55 ? 1 : Math.max(0, 1 - (h.z - 0.55) * 4);
           return (
             <div
               key={cat.id}

@@ -38,7 +38,12 @@ type NeuronCopy = {
   metric: { value: Template; unit: string; sub: Template };
 };
 type Connection = { from: string; to: string; note: string };
-type Spotlight = { label: string; value: Template; unit: string; delta: Template };
+type Spotlight = {
+  label: string;
+  value: Template;
+  unit: string;
+  delta: Template;
+};
 type ZoneStat = { zone: string; pct: number; count: number; meaning: string };
 
 type BrainContent = {
@@ -308,11 +313,11 @@ export async function loadBrainData(): Promise<BrainData> {
 
   const journalRecent = journals.latest
     ? relativeDay(journals.latest, today)
-    : "—";
+    : "-";
   const latestWorkout = workouts.recent[0];
   const workoutRecent = latestWorkout
     ? relativeDay(latestWorkout.date, today)
-    : "—";
+    : "-";
 
   // Substitution context per hub. Recipient can extend their content file
   // to use any of these placeholders.
