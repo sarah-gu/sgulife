@@ -84,6 +84,7 @@ export default function TravelMap({ home, visited }: Props) {
   const hoveredIsHome = hovered?.name === home;
 
   return (
+    <>
     <div
       ref={wrapRef}
       onMouseMove={onMove}
@@ -229,7 +230,7 @@ export default function TravelMap({ home, visited }: Props) {
         })}
       </svg>
 
-      <Legend summary={summary} compact={isMobile} />
+      {!isMobile && <Legend summary={summary} compact={false} />}
 
       {hovered && !isMobile && (
         <Tooltip
@@ -243,6 +244,8 @@ export default function TravelMap({ home, visited }: Props) {
 
       <Caption visitedCount={visited.length} compact={isMobile} />
     </div>
+    {isMobile && <Legend summary={summary} compact={true} />}
+    </>
   );
 }
 
@@ -253,26 +256,107 @@ function Legend({
   summary: Record<string, number>;
   compact?: boolean;
 }) {
+  if (compact) {
+    return (
+      <div
+        style={{
+          marginTop: 8,
+          padding: "8px 10px",
+          background: "rgba(8, 14, 28, 0.78)",
+          border: `0.5px solid ${ICE.hairline}`,
+          borderRadius: 10,
+          fontSize: 10,
+          color: "rgba(220,238,255,0.78)",
+          letterSpacing: 0.2,
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 9.5,
+            letterSpacing: 1.4,
+            textTransform: "uppercase",
+            color: "rgba(156, 213, 255, 0.55)",
+          }}
+        >
+          when
+        </span>
+        {YEAR_ORDER.map((k) => {
+          const p = YEAR_PALETTE[k];
+          const count = summary[k];
+          return (
+            <span
+              key={k}
+              style={{ display: "inline-flex", alignItems: "center", gap: 5 }}
+            >
+              <span
+                aria-hidden
+                style={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 2,
+                  background: p.fill,
+                  border: `0.5px solid ${p.stroke}`,
+                  flexShrink: 0,
+                }}
+              />
+              <span>
+                {p.label}
+                {count ? (
+                  <span
+                    style={{
+                      color: "rgba(220,238,255,0.4)",
+                      marginLeft: 3,
+                      fontVariantNumeric: "tabular-nums",
+                    }}
+                  >
+                    · {count}
+                  </span>
+                ) : null}
+              </span>
+            </span>
+          );
+        })}
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+          <span
+            aria-hidden
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: 2,
+              border: "0.5px solid rgba(220,240,255,0.6)",
+              backgroundImage:
+                "repeating-linear-gradient(45deg, rgba(220,240,255,0.55) 0 1.5px, rgba(220,240,255,0.18) 1.5px 4px)",
+              flexShrink: 0,
+            }}
+          />
+          <span>home</span>
+        </span>
+      </div>
+    );
+  }
   return (
     <div
       style={{
         position: "absolute",
-        left: compact ? 8 : 18,
-        bottom: compact ? 8 : 18,
+        left: 18,
+        bottom: 18,
         zIndex: 2,
         display: "flex",
         flexDirection: "column",
-        gap: compact ? 4 : 8,
-        padding: compact ? "8px 10px" : "12px 14px",
+        gap: 8,
+        padding: "12px 14px",
         background: "rgba(8, 14, 28, 0.78)",
         backdropFilter: "blur(14px) saturate(140%)",
         WebkitBackdropFilter: "blur(14px) saturate(140%)",
         border: `0.5px solid ${ICE.hairline}`,
         borderRadius: 10,
-        fontSize: compact ? 9.5 : 11,
+        fontSize: 11,
         color: "rgba(220,238,255,0.78)",
         letterSpacing: 0.2,
-        maxWidth: compact ? 130 : "none",
       }}
     >
       <div
