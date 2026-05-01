@@ -714,39 +714,17 @@ function TravelView({ travel }: { travel: TravelDetail }) {
   return (
     <>
       <style>{`
-        .travel-split {
-          display: grid;
-          grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+        .travel-stack {
+          display: flex;
+          flex-direction: column;
           gap: 20px;
-          align-items: stretch;
         }
         .travel-photos {
-          position: relative;
-          min-height: 0;
-        }
-        .travel-photos > .photo-strip-host {
-          position: absolute;
-          inset: 0;
-          display: flex;
-        }
-        @media (max-width: 980px) {
-          .travel-split {
-            grid-template-columns: 1fr;
-          }
-          .travel-photos {
-            position: static;
-            height: 560px;
-          }
-          .travel-photos > .photo-strip-host {
-            position: static;
-            inset: auto;
-            height: 100%;
-            width: 100%;
-          }
+          height: 360px;
         }
         @media (max-width: 720px) {
           .travel-photos {
-            height: 460px;
+            height: 320px;
           }
         }
       `}</style>
@@ -756,14 +734,12 @@ function TravelView({ travel }: { travel: TravelDetail }) {
         summary={travel.summary}
       />
       <div className="hd-pad" style={{ paddingBottom: 80 }}>
-        <div className="travel-split">
+        <div className="travel-stack">
           <div style={{ minWidth: 0 }}>
             <TravelMap home={travel.home} visited={travel.visited} />
           </div>
           <div className="travel-photos">
-            <div className="photo-strip-host">
-              <PhotoStrip photos={travel.photos} />
-            </div>
+            <PhotoStrip photos={travel.photos} />
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { ICE, type TravelPhoto } from "@/lib/brain";
 
 type Props = {
@@ -28,7 +28,7 @@ export default function PhotoStrip({ photos }: Props) {
     <div
       style={{
         position: "relative",
-        flex: 1,
+        width: "100%",
         height: "100%",
         minHeight: 0,
         minWidth: 0,
@@ -45,6 +45,12 @@ export default function PhotoStrip({ photos }: Props) {
         flexDirection: "column",
       }}
     >
+      <style>{`
+        .ps-card { width: 300px; }
+        @media (max-width: 720px) {
+          .ps-card { width: 240px; }
+        }
+      `}</style>
       <div
         style={{
           padding: "16px 18px 12px",
@@ -81,73 +87,49 @@ export default function PhotoStrip({ photos }: Props) {
         style={{
           flex: 1,
           minHeight: 0,
-          overflowY: "auto",
-          padding: "8px 14px 16px",
+          overflowX: "auto",
+          overflowY: "hidden",
+          padding: "14px 18px",
+          display: "flex",
+          gap: 14,
           scrollbarWidth: "thin",
           scrollbarColor: "rgba(156,213,255,0.25) transparent",
         }}
       >
         {groups.map((g, gi) => (
-          <div key={g.trip} style={{ marginTop: gi === 0 ? 8 : 18 }}>
-            <div
-              style={{
-                position: "sticky",
-                top: 0,
-                zIndex: 1,
-                padding: "8px 4px 10px",
-                background:
-                  "linear-gradient(180deg, rgba(8,14,28,0.95) 60%, rgba(8,14,28,0))",
-                fontSize: 10,
-                letterSpacing: 1.6,
-                textTransform: "uppercase",
-                color: ICE.accent,
-                fontFamily: "ui-monospace, monospace",
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <span
+          <Fragment key={g.trip}>
+            {gi > 0 && (
+              <div
                 aria-hidden
                 style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: 3,
-                  background: ICE.accent,
-                  boxShadow: `0 0 8px ${ICE.accent}`,
+                  flex: "0 0 auto",
+                  width: 1,
+                  alignSelf: "stretch",
+                  margin: "36px 12px",
+                  background: "rgba(156,213,255,0.16)",
                 }}
               />
-              <span>{g.trip}</span>
-              <span
-                aria-hidden
-                style={{ flex: 1, height: 0.5, background: "rgba(156,213,255,0.16)" }}
-              />
-              <span style={{ color: "rgba(220,238,255,0.45)", letterSpacing: 0.4 }}>
-                {g.photos.length}
-              </span>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {g.photos.map((p) => (
-                <PhotoRow key={p.src} photo={p} />
-              ))}
-            </div>
-          </div>
+            )}
+            {g.photos.map((p) => (
+              <PhotoCard key={p.src} photo={p} />
+            ))}
+          </Fragment>
         ))}
       </div>
     </div>
   );
 }
 
-function PhotoRow({ photo }: { photo: TravelPhoto }) {
+function PhotoCard({ photo }: { photo: TravelPhoto }) {
   return (
     <figure
+      className="ps-card"
       style={{
         margin: 0,
+        flex: "0 0 auto",
         display: "flex",
         flexDirection: "column",
         gap: 8,
-        cursor: "default",
       }}
     >
       <div
@@ -165,11 +147,22 @@ function PhotoRow({ photo }: { photo: TravelPhoto }) {
           src={photo.src}
           alt={photo.title}
           fill
-          sizes="(max-width: 900px) 90vw, 360px"
+          sizes="(max-width: 720px) 240px, 300px"
           style={{ objectFit: "cover" }}
         />
       </div>
       <figcaption style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <span
+          style={{
+            fontSize: 9.5,
+            letterSpacing: 1.4,
+            textTransform: "uppercase",
+            color: ICE.accent,
+            fontFamily: "ui-monospace, monospace",
+          }}
+        >
+          {photo.trip}
+        </span>
         <span
           style={{
             fontFamily: "var(--font-serif)",
