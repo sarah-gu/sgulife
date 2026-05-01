@@ -12,10 +12,10 @@ export const ICE = {
 } as const;
 
 // ── Particle / scene constants ──────────────────────────────────────────
-export const N_CORTEX_CLUSTERS = 180;
-export const N_CEREB_CLUSTERS = 28;
-export const PARTICLES_PER_CLUSTER_AVG = 95;
-export const N_CORTEX_FOG = 1800;
+export const N_CORTEX_CLUSTERS = 145;
+export const N_CEREB_CLUSTERS = 22;
+export const PARTICLES_PER_CLUSTER_AVG = 76;
+export const N_CORTEX_FOG = 1400;
 export const POINT_SIZE = 0.02;
 export const BRAIN_SCALE = 1.55;
 export const ROTATE_SENSITIVITY = 0.005;
