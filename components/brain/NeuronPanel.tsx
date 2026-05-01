@@ -176,17 +176,19 @@ export default function NeuronPanel({
             flex: 1,
           }}
         >
-          <p
-            style={{
-              fontSize: 15,
-              lineHeight: 1.6,
-              color: "rgba(190, 220, 255, 0.78)",
-              margin: "0 0 28px",
-              textWrap: "pretty",
-            }}
-          >
-            {content.summary}
-          </p>
+          {!isMobile && (
+            <p
+              style={{
+                fontSize: 15,
+                lineHeight: 1.6,
+                color: "rgba(190, 220, 255, 0.78)",
+                margin: "0 0 28px",
+                textWrap: "pretty",
+              }}
+            >
+              {content.summary}
+            </p>
+          )}
 
           <div
             style={{
@@ -238,7 +240,7 @@ export default function NeuronPanel({
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 14,
+              gap: isMobile ? 8 : 14,
               marginBottom: 8,
             }}
           >
@@ -248,9 +250,9 @@ export default function NeuronPanel({
                 style={{
                   display: "grid",
                   gridTemplateColumns: isMobile ? "1fr" : "120px 1fr",
-                  gap: isMobile ? 6 : 18,
+                  gap: isMobile ? 4 : 18,
                   alignItems: "baseline",
-                  paddingBottom: 14,
+                  paddingBottom: isMobile ? 8 : 14,
                   borderBottom:
                     i < content.threads.length - 1
                       ? "0.5px solid rgba(156,213,255,0.08)"
@@ -270,8 +272,8 @@ export default function NeuronPanel({
                 </div>
                 <div
                   style={{
-                    fontSize: 14,
-                    lineHeight: 1.55,
+                    fontSize: isMobile ? 12.5 : 14,
+                    lineHeight: isMobile ? 1.45 : 1.55,
                     color: "rgba(220,238,255,0.85)",
                     textWrap: "pretty",
                   }}
