@@ -1,0 +1,425 @@
+{
+  "_doc": "Personal landing page content for sgu.life - synthesized from sgu-eight.vercel.app.",
+
+  "hubs": {
+    "projects": {
+      "stat": "10 builds",
+      "recent": "Speedster"
+    },
+    "about": {
+      "stat": "Columbia '24",
+      "recent": "Building · NYC"
+    },
+    "hobbies": {
+      "stat": "4 obsessions",
+      "recent": "Solidcore Tuesdays"
+    },
+    "experience": {
+      "stat": "7 roles",
+      "recent": "Building something new"
+    },
+    "travel": {
+      "stat": "Asia loop",
+      "recent": "Japan · HK · China"
+    }
+  },
+
+  "neurons": {
+    "projects": {
+      "headline": "Hackathon wins, side bets, and one Senior Scramble.",
+      "summary": "Ten projects across hackathons, school, and weekends - a healthcare-supply-chain startup that won $15K, a campus dating site that pulled 700+ users in two weeks, a TreeHacks-winning pasture-grazing app I built on three dorm monitors after getting robbed, and most recently a Brooklyn Half tracker for my running crew.",
+      "threads": [
+        {
+          "label": "Award-winning",
+          "text": "Goji Health (Columbia VC, $15K) · Graze Pro (TreeHacks 2023, 1000+ participants) · CoronaVoice (EarthxHack 2020, 800+ participants)."
+        },
+        {
+          "label": "Most-used",
+          "text": "Senior Scramble - Columbia's 2024 senior dating site. 700+ users, hundreds of hours logged, all in two weeks."
+        },
+        {
+          "label": "First love",
+          "text": "Fishbowl online - brought the party game to the internet during COVID with vanilla HTML/CSS/JS so my friends could keep playing."
+        }
+      ],
+      "metric": { "value": "10", "unit": "builds", "sub": "3 hackathon wins" }
+    },
+    "about": {
+      "headline": "Software engineer and builder. ☺︎",
+      "summary": "Columbia CS grad (School of Engineering). Spent the past year at Citadel Securities; left in April 2026 to build something new. In free time: coding (like this site), reading, Solidcore, and - more often - eating.",
+      "threads": [
+        {
+          "label": "Now",
+          "text": "Building something new in NYC. Left Citadel Securities in April 2026 to do it."
+        },
+        {
+          "label": "Education",
+          "text": "Columbia University, B.S. Computer Science, School of Engineering and Applied Science."
+        },
+        {
+          "label": "Looking for",
+          "text": "New people to build with. Always open to a coffee - please reach out."
+        }
+      ],
+      "metric": { "value": "NYC", "unit": "based", "sub": "open to coffee" }
+    },
+    "hobbies": {
+      "headline": "Solidcore, Soulcycle, gym, eat, repeat.",
+      "summary": "Outside of code: a steady rotation of Solidcore classes, long bike rides, running, and most importantly, finding the next great restaurant. Baking shows up when the weather turns.",
+      "threads": [
+        {
+          "label": "Sweat",
+          "text": "Solidcore on Tuesdays. Long runs on weekends. Bike rides whenever the city lets me."
+        },
+        {
+          "label": "Make",
+          "text": "Baking - sourdough and a rotation of seasonal pies. Slow, hands-in-it work that makes the apartment smell good."
+        },
+        {
+          "label": "Eat",
+          "text": "A growing map of NYC restaurants. The best part of any new neighborhood is the dinner research."
+        }
+      ],
+      "metric": {
+        "value": "4",
+        "unit": "rituals",
+        "sub": "lift · ride · climb · eat"
+      }
+    },
+    "experience": {
+      "headline": "Six roles, MITRE to Citadel - and now building something new.",
+      "summary": "Three years of internships across Big Tech, defense, and pre-seed startups, then Citadel for a year. Left in April 2026 to start building something new. The thread: data and ML systems that real people actually use.",
+      "threads": [
+        {
+          "label": "Now",
+          "text": "Building something new - NYC, since April 2026."
+        },
+        {
+          "label": "Pre-seed bets",
+          "text": "Phia (data engineering, Phoebe Gates & Sophia Kianni's secondhand e-commerce) and Vivid (growth engineer at a 3-person Figma-to-code startup)."
+        },
+        {
+          "label": "Big tech & defense",
+          "text": "Microsoft (Azure monitoring), Facebook University iOS (2021), and three summers at MITRE (computer vision, BERT adversarial attacks, EEG-to-text)."
+        }
+      ],
+      "metric": { "value": "7", "unit": "chapters", "sub": "2018 → now" }
+    },
+    "travel": {
+      "headline": "Most recently: a loop through Japan, Hong Kong, and China.",
+      "summary": "I love traveling. The kind of trips that change the questions I ask - long walks, big mountains, places that feel a world away from NYC. Latest was an Asia loop: skiing Niseko and a few days in Tokyo, then Hong Kong, then home with family in China.",
+      "threads": [
+        {
+          "label": "Latest",
+          "text": "Japan · Hong Kong · China - Niseko powder, Tokyo, then time with family back in China."
+        },
+        {
+          "label": "Pilgrimage",
+          "text": "Camino de Santiago - slower, longer, the kind of trip that quiets everything else."
+        },
+        {
+          "label": "Photography",
+          "text": "Travel pairs with my other obsession: photography. Lately a Fujifilm X-T50 in my pack on every trip."
+        }
+      ],
+      "metric": {
+        "value": "-",
+        "unit": "countries visited",
+        "sub": "and counting"
+      }
+    }
+  },
+
+  "thoughts": [
+    {
+      "kind": "question",
+      "text": "what would i build if no one was watching?"
+    },
+    { "kind": "reminder", "text": "Solidcore at 7. don't skip the leg day." },
+    {
+      "kind": "pattern",
+      "text": "the best ideas show up between the gym and the train"
+    },
+    {
+      "kind": "question",
+      "text": "is this the next side project, or a real one?"
+    },
+    {
+      "kind": "reminder",
+      "text": "write the friend back. text the one you've been meaning to."
+    },
+    {
+      "kind": "pattern",
+      "text": "every breakthrough has been preceded by a long walk"
+    }
+  ],
+
+  "details": {
+    "about": {
+      "photo": "/sgu/sarahgu.jpg",
+      "name": "Sarah Gu",
+      "tagline": "software engineer and builder ☺︎",
+      "paragraphs": [
+        "I'm a Columbia grad (Computer Science, School of Engineering). I spent the past year as a Full-Stack Engineer at Citadel Securities and left in April 2026 to build something new.",
+        "In my free time, you can find me coding (like this website), reading, going to Solidcore, or - more likely - eating.",
+        "I'm always looking for new opportunities to grow. Please reach out!"
+      ],
+      "contactCta": "Send me a note",
+      "links": [
+        {
+          "label": "LinkedIn",
+          "href": "https://www.linkedin.com/in/sarahwgu/"
+        },
+        { "label": "GitHub", "href": "https://github.com/sarah-gu" },
+        { "label": "Instagram", "href": "https://www.instagram.com/sarahwgu/" }
+      ]
+    },
+
+    "experience": [
+      {
+        "company": "Building something new",
+        "role": "Founder",
+        "dates": "April 2026 → present",
+        "logo": "/sgu/sarahgu.jpg",
+        "blurb": "NYC. More to share soon.",
+        "details": "Left Citadel in April 2026 to start working on something new. Heads-down on it now - happy to talk about it over coffee if you reach out."
+      },
+      {
+        "company": "Citadel Securities",
+        "role": "Full-Stack Engineer",
+        "dates": "Full-time, 2024 - April 2026 · Internship, 2023",
+        "logo": "/sgu/citadel.png",
+        "blurb": "One of the world's leading market-making firms.",
+        "details": "Joined full-time after interning the summer before, on a full-stack team. Spent a year shipping internal tooling for trading systems before leaving in April 2026 to build something new."
+      },
+      {
+        "company": "Phia",
+        "role": "Data Engineer",
+        "dates": "Part-time, 2024",
+        "logo": "/sgu/phia.png",
+        "blurb": "Pre-seed-stage secondhand e-commerce startup led by Phoebe Gates & Sophia Kianni.",
+        "details": "Built out a pipeline for tracking purchases via affiliate-link UTM parameters, scraping data from 5+ partner networks and streaming into BigQuery. Set up a daily cron job on GCP. Owned the Amplitude analytics dashboard, instrumenting 30+ user-interaction metrics including DAU/MAU, AOV, and retention."
+      },
+      {
+        "company": "Vivid",
+        "role": "Growth Engineer",
+        "dates": "Internship, Spring 2023",
+        "logo": "/sgu/vivid.png",
+        "blurb": "Pre-seed, three-person startup converting Figma designs to frontend code.",
+        "details": "Owned the company's onboarding workflow - built an AI-powered internal tool that automatically links React components to their corresponding Figma designs. Designed and shipped the entire UX, prototyping in Figma and implementing in React, TypeScript, and Tailwind. Sat in on client meetings, investor updates, and customer-validation calls."
+      },
+      {
+        "company": "Microsoft",
+        "role": "Back-End Engineer",
+        "dates": "Internship, 2022",
+        "logo": "/sgu/microsoft.png",
+        "blurb": "Azure App Services monitoring team.",
+        "details": "Engineered a new monitoring pipeline for Azure App Services, yielding a 30× improvement in the number of metrics logged. Synthesized data from 2,500+ cloud servers and wired together 4+ Azure platforms to cleanly stream logs into a Kusto database. Deployed to production, where it now actively tracks all Azure App Service servers on the cloud."
+      },
+      {
+        "company": "Meta",
+        "role": "iOS Engineer",
+        "dates": "Facebook University Internship, 2021",
+        "logo": "/sgu/meta.png",
+        "blurb": "Facebook University - Meta's program for early-career engineers.",
+        "details": "Independently developed a note-sharing and transcribing iOS app in Xcode and Objective-C, using Apple's Core ML API to convert handwriting in images to text. Programmed sort-by-class, search-by-caption, and find-friends functionality."
+      },
+      {
+        "company": "MITRE",
+        "role": "AI / ML Engineer",
+        "dates": "Internship, 2018 · 2019 · 2020",
+        "logo": "/sgu/mitre.png",
+        "blurb": "Federally-funded R&D center. Three summers on the Core Health Radar & Detection team.",
+        "details": "2020 - implemented 10+ IR-image detection networks and produced a 93%-accurate model that outperformed an external client's needs (PyTorch & TensorFlow). 2019 - discovered a vulnerability in the BERT model to an adversarial data-leaking attack; white-box simulations exposed up to 70% of training data across 15+ deep-learning tests. 2018 - engineered a machine-learning pipeline to decipher thought, designing neural-net architectures that decode brainwaves from denoised EEG data into text."
+      }
+    ],
+
+    "projects": [
+      {
+        "name": "Speedster",
+        "image": "/sgu/speedster.png",
+        "description": "Live tracker I built for my crew running the Brooklyn Half - wave-grouped pace cards, on-course status, and a course elevation chart. Next.js.",
+        "link": "https://speedster-three.vercel.app/"
+      },
+      {
+        "name": "Goji Health",
+        "image": "/sgu/goji.png",
+        "award": "🏆 Winner - $15K, Columbia Venture Competition",
+        "description": "AI-powered startup predicting demand for healthcare supply-chain services. Interviewed hospital supply-chain directors nationwide to validate the problem.",
+        "link": "https://github.com/sarah-gu/dumpling"
+      },
+      {
+        "name": "Senior Scramble",
+        "image": "/sgu/seniorscramble.png",
+        "award": "700+ active users in 1 month",
+        "description": "Built Columbia's 2024 Senior Scramble site - 700+ users and hundreds of hours logged in two weeks. React, Prisma, AWS, PostgreSQL.",
+        "link": "https://github.com/sarah-gu/beautiful-landing-page"
+      },
+      {
+        "name": "Graze Pro",
+        "image": "/sgu/grazepro.png",
+        "award": "🏆 Winner - TreeHacks 2023 (1000+ participants)",
+        "description": "Rotational-grazing prediction app built at TreeHacks. We got robbed hours before the hackathon and built the whole thing on three dorm monitors at Stanford.",
+        "link": "https://github.com/sarah-gu/graze-pro"
+      },
+      {
+        "name": "FortuneGPT",
+        "image": "/sgu/fortunegpt.png",
+        "description": "GPT-3-powered app that generates personalized fortunes and horoscopes.",
+        "link": "https://github.com/sarah-gu/openai-api-testing"
+      },
+      {
+        "name": "Birthday Countdown",
+        "image": "/sgu/birthdaycountdown.png",
+        "description": "Animated birthday countdown with photos and confetti. React + Tailwind.",
+        "link": "https://github.com/sarah-gu/birthday-countdown"
+      },
+      {
+        "name": "Sound Match",
+        "image": "/sgu/soundmatch.png",
+        "description": "Audio-matching game that tests your ear for different frequencies and tunes. React + Tailwind.",
+        "link": "https://github.com/sarah-gu/sound-match"
+      },
+      {
+        "name": "CoronaVoice",
+        "image": "/sgu/coronavoice.png",
+        "award": "🏆 Winner - EarthxHack 2020 (800+ participants)",
+        "description": "NLP-based COVID screening tool that analyzes changes in vocal inflection to flag potential infection.",
+        "link": "https://github.com/neeyanthkvk/mycovidtracker"
+      },
+      {
+        "name": "Fishbowl",
+        "image": "/sgu/fishbowl.png",
+        "description": "One of my first projects - brought the party game Fishbowl online during COVID so friends could keep playing. Vanilla HTML, CSS, and JS.",
+        "link": "https://github.com/sarah-gu/fishbowl"
+      },
+      {
+        "name": "myAIScribe",
+        "image": "/sgu/myAIscribe.png",
+        "description": "iOS app that transcribes handwriting from photos into shareable text notes using Apple's Core ML. Xcode + Objective-C.",
+        "link": "https://github.com/sarah-gu/myAIScribe"
+      }
+    ],
+
+    "hobbies": [
+      {
+        "label": "Eating",
+        "image": "/sgu/restaurants.png",
+        "caption": "An always-growing map of NYC restaurants."
+      },
+      {
+        "label": "Baking",
+        "image": "/sgu/baking.png",
+        "caption": "Sourdough on the weekends. Pies in the fall."
+      },
+      {
+        "label": "Biking",
+        "image": "/sgu/biking.png",
+        "caption": "Long city loops, ideally with a coffee stop."
+      }
+    ],
+
+    "travel": {
+      "headline": "I love traveling.",
+      "summary": "Most formatively, the 30-day pilgrimage across Spain on the Camino de Santiago. It was beautiful. Long walks, big mountains, places with a total resident population of 50 - that trip changed the questions I ask.",
+      "home": "United States of America",
+      "visited": [
+        { "name": "Canada", "year": "<2021" },
+        { "name": "Mexico", "year": "<2021" },
+        { "name": "Iceland", "year": 2022 },
+        { "name": "Italy", "year": 2023 },
+        { "name": "France", "year": 2023 },
+        { "name": "Spain", "year": 2024, "trek": "camino" },
+        { "name": "Portugal", "year": 2024 },
+        { "name": "Japan", "year": 2026 },
+        { "name": "South Korea", "year": 2024 },
+        { "name": "China", "year": 2026 },
+        { "name": "Hong Kong", "year": 2026 },
+        { "name": "Thailand", "year": 2024, "trek": "seasia" },
+        { "name": "Vietnam", "year": 2024, "trek": "seasia" },
+        { "name": "Singapore", "year": 2024, "trek": "seasia" },
+        { "name": "Peru", "year": 2025, "trek": "salkantay" }
+      ],
+      "photos": [
+        {
+          "src": "/sgu/travel/bright-angel-trail-1.jpeg",
+          "title": "Bright Angel Trail",
+          "where": "Grand Canyon, AZ",
+          "trip": "Arizona Southwest"
+        },
+        {
+          "src": "/sgu/travel/bright-angel-trail-2.jpeg",
+          "title": "Bright Angel Trail",
+          "where": "Grand Canyon, AZ",
+          "trip": "Arizona Southwest"
+        },
+        {
+          "src": "/sgu/travel/grand-canyon.jpeg",
+          "title": "Grand Canyon",
+          "where": "Arizona",
+          "trip": "Arizona Southwest"
+        },
+        {
+          "src": "/sgu/travel/antelope-canyon.jpeg",
+          "title": "Antelope Canyon",
+          "where": "Arizona",
+          "trip": "Arizona Southwest"
+        },
+        {
+          "src": "/sgu/travel/horseshoe-bend.jpeg",
+          "title": "Horseshoe Bend",
+          "where": "Arizona",
+          "trip": "Arizona Southwest"
+        },
+        {
+          "src": "/sgu/travel/paracas-sand-dunes-1.jpeg",
+          "title": "Paracas Sand Dunes",
+          "where": "Huacachina, Peru",
+          "trip": "Peru"
+        },
+        {
+          "src": "/sgu/travel/seal-watching.jpeg",
+          "title": "Seal watching",
+          "where": "Huacachina, Peru",
+          "trip": "Peru"
+        },
+        {
+          "src": "/sgu/travel/paracas-sand-dunes-2.jpeg",
+          "title": "Paracas Sand Dunes",
+          "where": "Huacachina, Peru",
+          "trip": "Peru"
+        },
+        {
+          "src": "/sgu/travel/tunnel-mountain.jpeg",
+          "title": "Tunnel Mountain",
+          "where": "Banff, Canada",
+          "trip": "Banff"
+        },
+        {
+          "src": "/sgu/travel/big-beehive.jpeg",
+          "title": "Big Beehive",
+          "where": "Banff, Canada",
+          "trip": "Banff"
+        },
+        {
+          "src": "/sgu/travel/lake-louise.jpeg",
+          "title": "Lake Louise",
+          "where": "Banff, Canada",
+          "trip": "Banff"
+        },
+        {
+          "src": "/sgu/travel/camino.png",
+          "title": "Camino de Santiago",
+          "where": "Galicia, Spain",
+          "trip": "Camino de Santiago"
+        },
+        {
+          "src": "/sgu/travel/elephant.png",
+          "title": "Elephants",
+          "where": "Phuket, Thailand",
+          "trip": "Southeast Asia"
+        }
+      ]
+    }
+  }
+}

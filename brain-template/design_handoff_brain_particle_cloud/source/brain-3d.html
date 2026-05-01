@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>brain · 3d particle cloud (reference)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    html, body, #root { margin: 0; padding: 0; height: 100%; background: #0a0807; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: #fff5d8; -webkit-font-smoothing: antialiased; }
+    * { box-sizing: border-box; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+  <!-- Stub the BRAIN_CATEGORIES + ICE_PALETTE that brain-3d expects from the 2D file.
+       In production, these belong in a single shared module. -->
+  <script type="text/babel">
+    window.ICE_PALETTE = {
+      hi:  '#e6f4ff',
+      mid: 'rgba(190, 220, 255, 0.78)',
+      low: 'rgba(190, 220, 255, 0.45)',
+      hairline: 'rgba(140, 200, 255, 0.18)',
+      accent: '#9cd5ff',
+    };
+    // BRAIN_CATEGORIES mirrors HUBS_3D order so HoverChip / NeuronPanel can index by hub idx.
+    window.BRAIN_CATEGORIES = [
+      { id: 'ideas',   label: 'Ideas & projects', stat: '34 active',   recent: '2 days ago',  region: 'Frontal' },
+      { id: 'journal', label: 'Daily journal',    stat: '127 entries', recent: 'this morning', region: 'Prefrontal' },
+      { id: 'health',  label: 'Health metrics',   stat: '6 streams',   recent: 'syncing now',  region: 'Cerebellum' },
+      { id: 'people',  label: 'People',           stat: '218 nodes',   recent: 'yesterday',    region: 'Temporal' },
+      { id: 'travel',  label: 'Travel',           stat: '14 places',   recent: 'last month',   region: 'Parietal' },
+    ];
+  </script>
+
+  <script type="text/babel" src="brain-3d.jsx"></script>
+  <script type="text/babel" src="floating-thoughts.jsx"></script>
+  <script type="text/babel" src="neuron-panel.jsx"></script>
+  <script type="text/babel" src="health-detail.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

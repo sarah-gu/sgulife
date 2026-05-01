@@ -1,0 +1,110 @@
+{
+  "_doc": "Curated copy for the brain UI. Live counts (journals, workouts, entities, syntheses) come from the wiki. This file holds the synthesis prose. Strings may use {placeholders} — see brain-data.server.ts for the variables available per hub.",
+
+  "hubs": {
+    "ideas": {
+      "stat": "{count} syntheses",
+      "recent": "edit data/brain-content.json"
+    },
+    "journal": {
+      "stat": "{count} entries",
+      "recent": "{latest_relative}"
+    },
+    "health": {
+      "stat": "{count} sessions",
+      "recent": "{latest_workout_relative}"
+    },
+    "people": {
+      "stat": "{count} entities",
+      "recent": "edit data/brain-content.json"
+    },
+    "travel": {
+      "stat": "edit data/brain-content.json",
+      "recent": "—"
+    }
+  },
+
+  "neurons": {
+    "ideas": {
+      "headline": "Replace this headline with a synthesis of your active ideas.",
+      "summary": "Replace this paragraph with a 2–4 sentence synthesis across your idea pages — what's hot, what's stalled, what connects.",
+      "threads": [
+        { "label": "Hot idea", "text": "What's most active right now and why." },
+        { "label": "Stalled", "text": "What's paused and what would unblock it." },
+        { "label": "Connection", "text": "A non-obvious link between two ideas." }
+      ],
+      "metric": { "value": "{count}", "unit": "syntheses", "sub": "—" }
+    },
+    "journal": {
+      "headline": "Replace this with a synthesis of recent journal arcs.",
+      "summary": "What dominant questions show up across your recent journals? Where is your gut leading vs. your reasoning?",
+      "threads": [
+        { "label": "Recurring theme", "text": "A phrase or worry that's repeated this week." },
+        { "label": "Mood arc", "text": "What's gotten heavier; what's lifted." },
+        { "label": "Signal", "text": "A small thing that pointed at a bigger thing." }
+      ],
+      "metric": { "value": "{count}", "unit": "entries", "sub": "{latest_relative}" }
+    },
+    "health": {
+      "headline": "Replace this with a synthesis of your training arc.",
+      "summary": "What did your last meaningful event reveal? What's the unsolved problem in your training?",
+      "threads": [
+        { "label": "Trend", "text": "Recent peak or PR." },
+        { "label": "Anomaly", "text": "Anything off from bloodwork or recovery." },
+        { "label": "Streak", "text": "Total volume — sessions, milestones." }
+      ],
+      "metric": { "value": "{count}", "unit": "sessions", "sub": "{this_year} this year" }
+    },
+    "people": {
+      "headline": "Replace this with a synthesis of who's in your orbit right now.",
+      "summary": "Who is decision-shaping this week? Who is in your daily orbit? Who is new?",
+      "threads": [
+        { "label": "Closest", "text": "Daily orbit." },
+        { "label": "Decision-shaping", "text": "Whose read is load-bearing right now." },
+        { "label": "New", "text": "Someone who showed up recently." }
+      ],
+      "metric": { "value": "{count}", "unit": "entities", "sub": "—" }
+    },
+    "travel": {
+      "headline": "Replace this with a synthesis of meaningful travel.",
+      "summary": "Which trips changed the questions you ask? Which were geography? What's next?",
+      "threads": [
+        { "label": "Last meaningful trip", "text": "The one that mattered." },
+        { "label": "Recent", "text": "A more recent trip and what it surfaced." },
+        { "label": "Next", "text": "What's on the horizon." }
+      ],
+      "metric": { "value": "—", "unit": "—", "sub": "—" }
+    }
+  },
+
+  "health": {
+    "headline": "Replace this headline in data/brain-content.json.",
+    "summary": "Replace this paragraph in data/brain-content.json — a 2–3 sentence synthesis of where your training is right now and what's unsolved.",
+    "spotlight": {
+      "label": "Spotlight",
+      "value": "—",
+      "unit": "—",
+      "delta": "configure in data/brain-content.json"
+    },
+    "chartFootnote": "What pattern does your HR chart show?",
+    "zoneFootnote": "Source synthesis page: link or describe.",
+    "connections": [
+      { "from": "Health", "to": "Daily journal", "note": "Edit in data/brain-content.json — what does training reveal about how you are?" },
+      { "from": "Health", "to": "People", "note": "Who shows up in the gym / on long runs / in recovery?" },
+      { "from": "Health", "to": "Travel", "note": "Which trips were endurance arcs?" },
+      { "from": "Health", "to": "Ideas & projects", "note": "Does your training data inform any of your ideas?" }
+    ],
+    "highlight": {
+      "title": "Most recent meaningful event",
+      "detail": "What happened, distance/time, conditions",
+      "metric": "Headline metric"
+    }
+  },
+
+  "zoneStats": [
+    { "zone": "Z2 easy", "pct": 0, "count": 0, "meaning": "True aerobic base-building" },
+    { "zone": "Z3 gray", "pct": 0, "count": 0, "meaning": "Comfortable but not easy" },
+    { "zone": "Z4 tempo", "pct": 0, "count": 0, "meaning": "Threshold" },
+    { "zone": "Z5 hard", "pct": 0, "count": 0, "meaning": "Race effort" }
+  ]
+}
