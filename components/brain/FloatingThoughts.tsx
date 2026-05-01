@@ -7,10 +7,17 @@ import {
   type Thought,
 } from "@/lib/brain";
 
-const SLOTS = [
+const DESKTOP_SLOTS = [
   { x: 0.13, y: 0.32, align: "left" as const },
   { x: 0.87, y: 0.7, align: "right" as const },
 ];
+
+const MOBILE_SLOTS = [
+  { x: 0.5, y: 0.86, align: "center" as const },
+];
+
+type SlotAlign = "left" | "right" | "center";
+type Slot = { x: number; y: number; align: SlotAlign };
 
 type SlotState = {
   thoughtIdx: number;
@@ -21,9 +28,12 @@ type SlotState = {
 
 export default function FloatingThoughts({
   thoughts,
+  compact = false,
 }: {
   thoughts: Thought[];
+  compact?: boolean;
 }) {
+  const SLOTS: Slot[] = compact ? MOBILE_SLOTS : DESKTOP_SLOTS;
   const pool = thoughts.length > 0 ? thoughts : [];
   const [slotState, setSlotState] = useState<SlotState[]>(() =>
     SLOTS.map((_, i) => ({
@@ -35,6 +45,21 @@ export default function FloatingThoughts({
       lifeMs: 9000 + Math.random() * 4000,
     }))
   );
+
+  // Re-seed slotState when slot count changes (e.g., desktop ↔ mobile flip).
+  useEffect(() => {
+    setSlotState((prev) => {
+      if (prev.length === SLOTS.length) return prev;
+      const now = performance.now();
+      return SLOTS.map((_, i) => ({
+        thoughtIdx: pool.length ? i % pool.length : 0,
+        key: 1000 + i,
+        startMs: now - i * 1500,
+        lifeMs: 9000 + Math.random() * 4000,
+      }));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [SLOTS.length]);
 
   useEffect(() => {
     if (pool.length === 0) return;
@@ -86,13 +111,14 @@ export default function FloatingThoughts({
         zIndex: 4,
       }}
     >
-      {slotState.map((s, i) => (
+      {slotState.slice(0, SLOTS.length).map((s, i) => (
         <ThoughtBubble
           key={s.key}
           slot={SLOTS[i]}
           thought={pool[s.thoughtIdx]}
           startMs={s.startMs}
           lifeMs={s.lifeMs}
+          compact={compact}
         />
       ))}
     </div>
@@ -104,11 +130,13 @@ function ThoughtBubble({
   thought,
   startMs,
   lifeMs,
+  compact,
 }: {
-  slot: { x: number; y: number; align: "left" | "right" };
+  slot: Slot;
   thought: Thought;
   startMs: number;
   lifeMs: number;
+  compact?: boolean;
 }) {
   const [opacity, setOpacity] = useState(0);
   const [drift, setDrift] = useState(0);
@@ -133,6 +161,9 @@ function ThoughtBubble({
   }, [startMs, lifeMs]);
 
   const isRight = slot.align === "right";
+  const isCenter = slot.align === "center";
+  const translateX = isCenter ? "-50%" : isRight ? "-100%" : "0";
+  const align = isCenter ? "center" : isRight ? "right" : "left";
 
   return (
     <div
@@ -140,12 +171,10 @@ function ThoughtBubble({
         position: "absolute",
         left: `${slot.x * 100}%`,
         top: `${slot.y * 100}%`,
-        transform: `translate(${
-          isRight ? "-100%" : "0"
-        }, calc(-50% + ${-drift}px))`,
+        transform: `translate(${translateX}, calc(-50% + ${-drift}px))`,
         opacity,
-        maxWidth: 220,
-        textAlign: isRight ? "right" : "left",
+        maxWidth: compact ? "calc(100vw - 56px)" : 220,
+        textAlign: align,
         fontFamily: "var(--font-sans)",
         transition: "opacity 0.4s ease",
       }}
@@ -162,7 +191,11 @@ function ThoughtBubble({
           display: "flex",
           alignItems: "center",
           gap: 8,
-          justifyContent: isRight ? "flex-end" : "flex-start",
+          justifyContent: isCenter
+            ? "center"
+            : isRight
+            ? "flex-end"
+            : "flex-start",
         }}
       >
         {!isRight && (
@@ -192,7 +225,7 @@ function ThoughtBubble({
       <div
         style={{
           fontFamily: "var(--font-serif)",
-          fontSize: 17,
+          fontSize: compact ? 14 : 17,
           lineHeight: 1.3,
           fontWeight: 300,
           color: ICE.hi,

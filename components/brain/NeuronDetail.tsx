@@ -56,7 +56,8 @@ export default function NeuronDetail({
           "radial-gradient(ellipse at 30% 20%, #0f1a32 0%, #050810 55%)",
         color: "rgba(190, 220, 255, 0.92)",
         fontFamily: "var(--font-sans)",
-        overflow: "auto",
+        overflowY: "auto",
+        overflowX: "hidden",
         animation: "hd-fade 0.6s ease",
       }}
     >
@@ -67,7 +68,10 @@ export default function NeuronDetail({
                    -webkit-backdrop-filter: blur(20px) saturate(140%);
                    border: 0.5px solid rgba(156,213,255,0.16);
                    border-radius: 14px;
+                   min-width: 0;
+                   overflow-wrap: anywhere;
                    box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(220,238,255,0.05); }
+        .hd-experience-card > div:last-child { min-width: 0; }
         .hd-eyebrow { font-size: 10px; letter-spacing: 1.6px; text-transform: uppercase;
                       color: rgba(156, 213, 255, 0.55); font-weight: 500; }
         .hd-pad { padding-left: 56px; padding-right: 56px; }
@@ -836,9 +840,13 @@ function BrainBackdrop() {
         pointerEvents: "none",
         zIndex: 0,
         opacity: 0.45,
+        overflow: "hidden",
       }}
     >
-      <canvas ref={ref} style={{ position: "absolute", inset: 0 }} />
+      <canvas
+        ref={ref}
+        style={{ position: "absolute", inset: 0, maxWidth: "100%", maxHeight: "100%" }}
+      />
     </div>
   );
 }

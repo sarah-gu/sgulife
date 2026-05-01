@@ -245,8 +245,8 @@ export default function BrainPage({ data }: { data: BrainData }) {
             <HoverChip hub={data.hubs[hover]} compact={isMobile} />
           )}
 
-          {expanded === null && !isMobile && (
-            <FloatingThoughts thoughts={data.thoughts} />
+          {expanded === null && (
+            <FloatingThoughts thoughts={data.thoughts} compact={isMobile} />
           )}
 
           {expanded !== null && (
