@@ -72,7 +72,7 @@ export function fissureKeep(x: number, y: number, z: number): number {
 }
 
 // ── Hubs ────────────────────────────────────────────────────────────────
-export type HubId = "projects" | "about" | "hobbies" | "experience" | "travel";
+export type HubId = "projects" | "about" | "experience" | "travel";
 
 export type HubBase = {
   id: HubId;
@@ -89,29 +89,22 @@ export type Hub = HubBase & {
 
 export const HUBS_BASE: HubBase[] = [
   {
-    id: "projects",
-    label: "Projects",
-    region: "Frontal",
-    dir: [-0.45, 0.8, 0.4],
-  },
-  {
     id: "about",
     label: "About",
-    region: "Prefrontal",
-    dir: [-0.75, 0.55, 0.35],
-  },
-  {
-    id: "hobbies",
-    label: "Hobbies",
-    region: "Cerebellum",
-    dir: [0.3, -0.85, -0.3],
-    cerebellum: true,
+    region: "Occipital",
+    dir: [0.15, 0.45, -0.85],
   },
   {
     id: "experience",
     label: "Experience",
     region: "Temporal",
     dir: [-0.55, -0.3, -0.55],
+  },
+  {
+    id: "projects",
+    label: "Projects",
+    region: "Frontal",
+    dir: [-0.45, 0.8, 0.4],
   },
   {
     id: "travel",
@@ -196,12 +189,6 @@ export type ProjectItem = {
   image: string;
 };
 
-export type HobbyItem = {
-  label: string;
-  image: string;
-  caption?: string;
-};
-
 export type VisitedCountry = {
   name: string;
   year: number | string;
@@ -227,7 +214,6 @@ export type DetailContent = {
   about: AboutDetail;
   experience: ExperienceItem[];
   projects: ProjectItem[];
-  hobbies: HobbyItem[];
   travel: TravelDetail;
 };
 

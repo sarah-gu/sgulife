@@ -2,12 +2,12 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ICE,
   type DetailContent,
   type ExperienceItem,
-  type HobbyItem,
+  type Hub,
   type HubId,
   type LinkRef,
   type ProjectItem,
@@ -37,7 +37,9 @@ type Props = {
   hubLabel: string;
   hubRegion: string;
   details: DetailContent;
+  hubs: Hub[];
   onBack: () => void;
+  onNavigate: (id: HubId) => void;
 };
 
 export default function NeuronDetail({
@@ -45,8 +47,13 @@ export default function NeuronDetail({
   hubLabel,
   hubRegion,
   details,
+  hubs,
   onBack,
+  onNavigate,
 }: Props) {
+  const idx = hubs.findIndex((h) => h.id === hubId);
+  const prev = idx >= 0 ? hubs[(idx - 1 + hubs.length) % hubs.length] : null;
+  const next = idx >= 0 ? hubs[(idx + 1) % hubs.length] : null;
   return (
     <div
       style={{
@@ -59,6 +66,7 @@ export default function NeuronDetail({
         overflowY: "auto",
         overflowX: "hidden",
         animation: "hd-fade 0.6s ease",
+        paddingBottom: 96,
       }}
     >
       <style>{`
@@ -79,7 +87,7 @@ export default function NeuronDetail({
         .hd-summary { font-size: 17px; }
         .hd-about-grid { display: grid; gap: 32px; grid-template-columns: minmax(240px, 320px) 1fr; align-items: start; }
         .hd-projects-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
-        .hd-hobbies-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .hd-project-card:hover { transform: translateY(-2px); border-color: rgba(156, 213, 255, 0.32); }
         .hd-experience-card { padding: 28px; display: grid; grid-template-columns: 72px 1fr; gap: 24px; align-items: start; }
         @media (max-width: 720px) {
           .hd-pad { padding-left: 18px; padding-right: 18px; }
@@ -87,7 +95,6 @@ export default function NeuronDetail({
           .hd-summary { font-size: 14px; }
           .hd-about-grid { grid-template-columns: 1fr; gap: 20px; }
           .hd-projects-grid { grid-template-columns: 1fr; gap: 14px; }
-          .hd-hobbies-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
           .hd-experience-card { padding: 18px; grid-template-columns: 56px 1fr; gap: 14px; }
         }
       `}</style>
@@ -101,10 +108,93 @@ export default function NeuronDetail({
           <ExperienceView items={details.experience} />
         )}
         {hubId === "projects" && <ProjectsView items={details.projects} />}
-        {hubId === "hobbies" && <HobbiesView items={details.hobbies} />}
         {hubId === "travel" && <TravelView travel={details.travel} />}
+        {prev && next && (
+          <NeuronFooter prev={prev} next={next} onNavigate={onNavigate} />
+        )}
       </div>
     </div>
+  );
+}
+
+function NeuronFooter({
+  prev,
+  next,
+  onNavigate,
+}: {
+  prev: Hub;
+  next: Hub;
+  onNavigate: (id: HubId) => void;
+}) {
+  return (
+    <div
+      className="hd-pad"
+      style={{
+        position: "fixed",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 20,
+        paddingTop: 14,
+        paddingBottom: "calc(14px + env(safe-area-inset-bottom, 0px))",
+        background:
+          "linear-gradient(0deg, rgba(5,8,16,0.94) 0%, rgba(5,8,16,0.82) 65%, rgba(5,8,16,0.55) 100%)",
+        backdropFilter: "blur(16px) saturate(140%)",
+        WebkitBackdropFilter: "blur(16px) saturate(140%)",
+        borderTop: "0.5px solid rgba(156,213,255,0.14)",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 16,
+      }}
+    >
+      <NeuronFooterLink direction="prev" hub={prev} onNavigate={onNavigate} />
+      <NeuronFooterLink direction="next" hub={next} onNavigate={onNavigate} />
+    </div>
+  );
+}
+
+function NeuronFooterLink({
+  direction,
+  hub,
+  onNavigate,
+}: {
+  direction: "prev" | "next";
+  hub: Hub;
+  onNavigate: (id: HubId) => void;
+}) {
+  const isNext = direction === "next";
+  return (
+    <button
+      onClick={() => onNavigate(hub.id)}
+      style={{
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+        padding: 0,
+        textAlign: isNext ? "right" : "left",
+        color: "inherit",
+        fontFamily: "inherit",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: isNext ? "flex-end" : "flex-start",
+        gap: 4,
+      }}
+    >
+      <span className="hd-eyebrow">
+        {isNext ? "next →" : "← previous"}
+      </span>
+      <span
+        style={{
+          fontFamily: "var(--font-serif)",
+          fontSize: 24,
+          fontWeight: 400,
+          color: ICE.hi,
+          letterSpacing: -0.2,
+        }}
+      >
+        {hub.label.toLowerCase()}
+      </span>
+    </button>
   );
 }
 
@@ -234,7 +324,7 @@ function AboutView({ about }: { about: AboutDetail }) {
   return (
     <>
       <HubTitle
-        eyebrow={`Neuron · About · ${about.name.toLowerCase()}`}
+        eyebrow={about.name.toLowerCase()}
         headline={about.tagline}
       />
       <div
@@ -372,7 +462,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
   return (
     <>
       <HubTitle
-        eyebrow={`Neuron · Experience · ${items.length} roles`}
+        eyebrow={`${items.length} roles`}
         headline="Seven chapters, MITRE to Citadel — and now building something new."
         summary="Three years of internships across Big Tech, defense, and pre-seed startups, then Citadel for a year. Left in April 2026 to start something new. The thread: data and ML systems that real people actually use."
       />
@@ -394,6 +484,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
 }
 
 function ExperienceCard({ item }: { item: ExperienceItem }) {
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="hd-card hd-experience-card">
       <div
@@ -454,7 +545,7 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
           style={{
             fontSize: 14,
             color: "rgba(220,238,255,0.82)",
-            marginBottom: 12,
+            marginBottom: expanded ? 12 : 8,
             letterSpacing: 0.2,
           }}
         >
@@ -464,17 +555,37 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
             · {item.blurb}
           </span>
         </div>
-        <p
+        {expanded && (
+          <p
+            style={{
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: "rgba(220,238,255,0.7)",
+              margin: "0 0 12px",
+              textWrap: "pretty",
+            }}
+          >
+            {item.details}
+          </p>
+        )}
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
           style={{
-            fontSize: 14,
-            lineHeight: 1.6,
-            color: "rgba(220,238,255,0.7)",
-            margin: 0,
-            textWrap: "pretty",
+            background: "transparent",
+            border: "none",
+            padding: 0,
+            color: ICE.accent,
+            opacity: 0.7,
+            cursor: "pointer",
+            fontFamily: "ui-monospace, monospace",
+            fontSize: 11,
+            letterSpacing: 1.2,
+            textTransform: "uppercase",
           }}
         >
-          {item.details}
-        </p>
+          {expanded ? "− less" : "+ details"}
+        </button>
       </div>
     </div>
   );
@@ -485,7 +596,7 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
   return (
     <>
       <HubTitle
-        eyebrow={`Neuron · Projects · ${items.length} builds`}
+        eyebrow={`${items.length} builds`}
         headline="Hackathon wins, side bets, and one Senior Scramble."
         summary="From a healthcare-supply-chain startup that won $15K, to Columbia's 2024 Senior Scramble (700+ users), to the rotational-grazing app I built on dorm monitors after getting robbed at TreeHacks."
       />
@@ -513,7 +624,7 @@ function ProjectCard({ project }: { project: ProjectItem }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className="hd-card"
+      className="hd-card hd-project-card"
       style={{
         padding: 0,
         overflow: "hidden",
@@ -612,90 +723,6 @@ function ProjectCard({ project }: { project: ProjectItem }) {
   );
 }
 
-// ── Hobbies ─────────────────────────────────────────────────────────────
-function HobbiesView({ items }: { items: HobbyItem[] }) {
-  return (
-    <>
-      <HubTitle
-        eyebrow={`Neuron · Hobbies · ${items.length} rituals`}
-        headline="Solidcore, soulcycle, run, eat, repeat"
-        summary="Outside of code: Solidcore classes, long bike rides, slow runs, and finding the next great restaurant. Baking shows up when the weather turns."
-      />
-      <div
-        className="hd-pad hd-hobbies-grid"
-        style={{ paddingBottom: 80 }}
-      >
-        {items.map((h) => (
-          <HobbyCard key={h.label} hobby={h} />
-        ))}
-      </div>
-    </>
-  );
-}
-
-function HobbyCard({ hobby }: { hobby: HobbyItem }) {
-  return (
-    <div
-      className="hd-card"
-      style={{
-        padding: 0,
-        overflow: "hidden",
-        position: "relative",
-        aspectRatio: "4 / 5",
-        isolation: "isolate",
-      }}
-    >
-      <Image
-        src={hobby.image}
-        alt={hobby.label}
-        fill
-        sizes="(max-width: 800px) 50vw, 25vw"
-        style={{ objectFit: "cover" }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(180deg, rgba(5,8,16,0) 40%, rgba(5,8,16,0.92) 100%)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          left: 18,
-          right: 18,
-          bottom: 18,
-        }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: 26,
-            fontWeight: 400,
-            color: ICE.hi,
-            letterSpacing: -0.2,
-            marginBottom: 4,
-          }}
-        >
-          {hobby.label}
-        </div>
-        {hobby.caption && (
-          <div
-            style={{
-              fontSize: 12.5,
-              color: "rgba(220,238,255,0.78)",
-              lineHeight: 1.45,
-            }}
-          >
-            {hobby.caption}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 // ── Travel ──────────────────────────────────────────────────────────────
 function TravelView({ travel }: { travel: TravelDetail }) {
   return (
@@ -738,7 +765,7 @@ function TravelView({ travel }: { travel: TravelDetail }) {
         }
       `}</style>
       <HubTitle
-        eyebrow={`Neuron · Travel · ${travel.visited.length} countries`}
+        eyebrow={`${travel.visited.length} countries`}
         headline={travel.headline}
         summary={travel.summary}
       />

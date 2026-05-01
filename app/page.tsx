@@ -5,7 +5,7 @@ export default function Home() {
   const data = loadBrainData();
   return (
     <main style={{ position: "fixed", inset: 0 }}>
-      <BrainPage data={data} />
+      <BrainPage data={data} initialRoute="brain" />
     </main>
   );
 }

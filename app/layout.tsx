@@ -15,9 +15,36 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
+const SITE_TITLE = "Sarah Gu — software engineer & builder";
+const SITE_DESCRIPTION =
+  "Columbia CS '24 · ex-Citadel Securities · building something new in NYC.";
+const SITE_URL = "https://sgu.life";
+
 export const metadata: Metadata = {
-  title: "brain",
-  description: "Your second mind — a brain you can traverse.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: "sgu.life",
+    images: [
+      {
+        url: "/sgu-life.png",
+        width: 1249,
+        height: 679,
+        alt: "sgu.life — Sarah Gu's interactive brain portfolio",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/sgu-life.png"],
+  },
 };
 
 export default function RootLayout({

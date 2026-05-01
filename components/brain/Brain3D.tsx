@@ -316,7 +316,8 @@ export default function Brain3D({
     let dragging = false;
     let lastX = 0,
       lastY = 0;
-    let autoRot = true;
+    let autoRot = !window.matchMedia("(prefers-reduced-motion: reduce)")
+      .matches;
 
     const onDown = (e: PointerEvent) => {
       dragging = true;

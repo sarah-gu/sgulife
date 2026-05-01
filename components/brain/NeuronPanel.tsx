@@ -132,7 +132,7 @@ export default function NeuronPanel({
                 fontWeight: 500,
               }}
             >
-              {cat.label} · synthesis
+              {cat.label}
             </div>
             <div
               style={{
@@ -312,36 +312,8 @@ export default function NeuronPanel({
               fontFamily: "inherit",
             }}
           >
-            Enter neuron →
+            Read more →
           </button>
-          <button
-            onClick={onClose}
-            style={{
-              padding: "10px 18px",
-              background: "transparent",
-              border: "none",
-              color: "rgba(190,220,255,0.55)",
-              fontSize: 13,
-              fontWeight: 500,
-              letterSpacing: 0.3,
-              cursor: "pointer",
-              fontFamily: "inherit",
-            }}
-          >
-            Back to brain
-          </button>
-          <div style={{ flex: 1 }} />
-          {!isMobile && (
-            <div
-              style={{
-                fontSize: 11,
-                color: "rgba(190,220,255,0.35)",
-                fontStyle: "italic",
-              }}
-            >
-              synthesized just now
-            </div>
-          )}
         </div>
       </div>
     </>

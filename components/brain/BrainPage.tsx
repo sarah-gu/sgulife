@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { ICE, type BrainData, type Hub, type HubId } from "@/lib/brain";
 import FloatingThoughts from "./FloatingThoughts";
@@ -10,11 +11,18 @@ import { useIsMobile } from "./use-mobile";
 
 const Brain3D = dynamic(() => import("./Brain3D"), { ssr: false });
 
-export default function BrainPage({ data }: { data: BrainData }) {
+export default function BrainPage({
+  data,
+  initialRoute,
+}: {
+  data: BrainData;
+  initialRoute: "brain" | HubId;
+}) {
   const [hover, setHover] = useState<number | null>(null);
   const [expanded, setExpanded] = useState<number | null>(null);
   const [anchor, setAnchor] = useState({ x: 0.5, y: 0.5 });
-  const [route, setRoute] = useState<"brain" | HubId>("brain");
+  const route = initialRoute;
+  const router = useRouter();
   const wrapRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -121,20 +129,40 @@ export default function BrainPage({ data }: { data: BrainData }) {
             }}
           >
             <div>{today}</div>
-            <div style={{ marginTop: 4, opacity: 0.65 }}>
-              <span
-                style={{
-                  display: "inline-block",
-                  width: 5,
-                  height: 5,
-                  borderRadius: 3,
-                  background: ICE.accent,
-                  marginRight: 6,
-                  verticalAlign: "middle",
-                  boxShadow: `0 0 8px ${ICE.accent}`,
-                }}
-              />
-              all sources synced
+            <div
+              style={{
+                marginTop: 6,
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              {data.details.about.links.map((link, i) => (
+                <span
+                  key={link.label}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}
+                >
+                  {i > 0 && <span style={{ opacity: 0.4 }}>·</span>}
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "inherit",
+                      textDecoration: "none",
+                      opacity: 0.7,
+                      letterSpacing: 1.4,
+                    }}
+                  >
+                    {link.label.toLowerCase()}
+                  </a>
+                </span>
+              ))}
             </div>
           </div>
 
@@ -155,6 +183,10 @@ export default function BrainPage({ data }: { data: BrainData }) {
             >
               <div
                 style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: isMobile ? 10 : 14,
                   fontFamily: "var(--font-serif)",
                   fontSize: isMobile ? 26 : 38,
                   lineHeight: 1.05,
@@ -162,12 +194,25 @@ export default function BrainPage({ data }: { data: BrainData }) {
                   color: ICE.hi,
                   letterSpacing: -0.4,
                   fontStyle: "italic",
-                  textWrap: "balance",
-                  maxWidth: 640,
-                  margin: "0 auto",
                 }}
               >
-                hi, I&rsquo;m sarah gu
+                <span>hi, I&rsquo;m sarah gu</span>
+                <img
+                  src="/sgu/sarahgu.jpg"
+                  alt="Sarah Gu"
+                  width={isMobile ? 38 : 52}
+                  height={isMobile ? 38 : 52}
+                  style={{
+                    width: isMobile ? 38 : 52,
+                    height: isMobile ? 38 : 52,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: "0.5px solid rgba(156, 213, 255, 0.3)",
+                    boxShadow:
+                      "0 0 24px rgba(156, 213, 255, 0.2), inset 0 0 0 1px rgba(220, 238, 255, 0.08)",
+                    flexShrink: 0,
+                  }}
+                />
               </div>
               <div
                 style={{
@@ -175,17 +220,84 @@ export default function BrainPage({ data }: { data: BrainData }) {
                   fontSize: isMobile ? 12 : 13,
                   lineHeight: 1.5,
                   color: ICE.mid,
-                  marginTop: 12,
                   fontWeight: 300,
                   letterSpacing: 0.2,
-                  maxWidth: 520,
+                  maxWidth: 560,
                   margin: isMobile ? "8px auto 0" : "12px auto 0",
                   textWrap: "balance",
                 }}
               >
-                software engineer + builder. currently obsessed with the idea of
-                a digital brain.
+                software engineer + builder &middot; columbia cs &rsquo;24
+                &middot; ex-citadel &middot; building something new in nyc
               </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: isMobile ? 11 : 12,
+                  lineHeight: 1.5,
+                  color: ICE.low,
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                  letterSpacing: 0.2,
+                  maxWidth: 480,
+                  margin: "6px auto 0",
+                  textWrap: "balance",
+                }}
+              >
+                currently obsessed with the idea of a digital brain.
+              </div>
+              {!isMobile && (
+                <div
+                  style={{
+                    marginTop: 18,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 16,
+                    opacity: 0.55,
+                  }}
+                >
+                  {[
+                    { src: "/sgu/columbia.svg", alt: "Columbia", h: 30 },
+                    { src: "/sgu/neo.png", alt: "Neo", h: 18 },
+                    { src: "/sgu/citadel-strip.png", alt: "Citadel Securities", h: 24 },
+                    { src: "/sgu/microsoft.svg", alt: "Microsoft", h: 18 },
+                    { src: "/sgu/meta.svg", alt: "Meta", h: 16 },
+                    { src: "/sgu/mitre.svg", alt: "MITRE", h: 14 },
+                  ].map((logo, i, arr) => (
+                    <span
+                      key={logo.alt}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 16,
+                      }}
+                    >
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        style={{
+                          height: logo.h,
+                          width: "auto",
+                          objectFit: "contain",
+                          filter: "brightness(0) invert(1)",
+                        }}
+                      />
+                      {i < arr.length - 1 && (
+                        <span
+                          style={{
+                            color: ICE.low,
+                            opacity: 0.5,
+                            fontSize: 10,
+                          }}
+                        >
+                          ·
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              )}
               <div
                 style={{
                   fontSize: isMobile ? 9 : 10,
@@ -255,7 +367,7 @@ export default function BrainPage({ data }: { data: BrainData }) {
               content={data.neurons[data.hubs[expanded].id as HubId]}
               anchor={anchor}
               onClose={() => setExpanded(null)}
-              onOpenDetail={(id) => setRoute(id)}
+              onOpenDetail={(id) => router.push(`/${id}`)}
             />
           )}
 
@@ -263,7 +375,7 @@ export default function BrainPage({ data }: { data: BrainData }) {
             hubs={data.hubs}
             hovered={hover}
             onHoverHub={setHover}
-            onPickHub={(idx) => onHubClick(idx)}
+            onPickHub={(idx) => router.push(`/${data.hubs[idx].id}`)}
             disabled={expanded !== null}
             compact={isMobile}
           />
@@ -274,10 +386,9 @@ export default function BrainPage({ data }: { data: BrainData }) {
           hubLabel={data.hubs.find((h) => h.id === route)?.label ?? route}
           hubRegion={data.hubs.find((h) => h.id === route)?.region ?? ""}
           details={data.details}
-          onBack={() => {
-            setRoute("brain");
-            setExpanded(null);
-          }}
+          hubs={data.hubs}
+          onBack={() => router.push("/")}
+          onNavigate={(id) => router.push(`/${id}`)}
         />
       )}
     </div>

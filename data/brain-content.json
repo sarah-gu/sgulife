@@ -10,10 +10,6 @@
       "stat": "Columbia '24",
       "recent": "Building · NYC"
     },
-    "hobbies": {
-      "stat": "4 obsessions",
-      "recent": "Solidcore Tuesdays"
-    },
     "experience": {
       "stat": "7 roles",
       "recent": "Building something new"
@@ -62,29 +58,6 @@
         }
       ],
       "metric": { "value": "NYC", "unit": "based", "sub": "open to coffee" }
-    },
-    "hobbies": {
-      "headline": "Solidcore, Soulcycle, gym, eat, repeat.",
-      "summary": "Outside of code: a steady rotation of Solidcore classes, long bike rides, running, and most importantly, finding the next great restaurant. Baking shows up when the weather turns.",
-      "threads": [
-        {
-          "label": "Sweat",
-          "text": "Solidcore on Tuesdays. Long runs on weekends. Bike rides whenever the city lets me."
-        },
-        {
-          "label": "Make",
-          "text": "Baking - sourdough and a rotation of seasonal pies. Slow, hands-in-it work that makes the apartment smell good."
-        },
-        {
-          "label": "Eat",
-          "text": "A growing map of NYC restaurants. The best part of any new neighborhood is the dinner research."
-        }
-      ],
-      "metric": {
-        "value": "4",
-        "unit": "rituals",
-        "sub": "lift · ride · climb · eat"
-      }
     },
     "experience": {
       "headline": "Six roles, MITRE to Citadel - and now building something new.",
@@ -298,24 +271,6 @@
         "image": "/sgu/myAIscribe.png",
         "description": "iOS app that transcribes handwriting from photos into shareable text notes using Apple's Core ML. Xcode + Objective-C.",
         "link": "https://github.com/sarah-gu/myAIScribe"
-      }
-    ],
-
-    "hobbies": [
-      {
-        "label": "Eating",
-        "image": "/sgu/restaurants.png",
-        "caption": "An always-growing map of NYC restaurants."
-      },
-      {
-        "label": "Baking",
-        "image": "/sgu/baking.png",
-        "caption": "Sourdough on the weekends. Pies in the fall."
-      },
-      {
-        "label": "Biking",
-        "image": "/sgu/biking.png",
-        "caption": "Long city loops, ideally with a coffee stop."
       }
     ],
 
