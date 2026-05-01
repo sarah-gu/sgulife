@@ -379,16 +379,17 @@ function HubNav({
       style={{
         position: "absolute",
         bottom: compact ? 20 : 32,
-        left: "50%",
-        transform: "translateX(-50%)",
+        left: compact ? 8 : "50%",
+        right: compact ? 8 : undefined,
+        transform: compact ? undefined : "translateX(-50%)",
         zIndex: 5,
         opacity: disabled ? 0 : 1,
         transition: "opacity 0.4s ease",
         pointerEvents: disabled ? "none" : "auto",
         display: "flex",
-        alignItems: "center",
-        gap: compact ? 4 : 6,
-        padding: compact ? "6px 8px" : "8px 10px",
+        alignItems: "stretch",
+        gap: compact ? 2 : 6,
+        padding: compact ? 4 : "8px 10px",
         background: "rgba(12, 20, 36, 0.62)",
         backdropFilter: "blur(24px) saturate(140%)",
         WebkitBackdropFilter: "blur(24px) saturate(140%)",
@@ -396,8 +397,8 @@ function HubNav({
         borderRadius: 999,
         boxShadow:
           "0 12px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(220,238,255,0.05)",
-        maxWidth: "calc(100vw - 32px)",
-        flexWrap: "wrap",
+        maxWidth: compact ? undefined : "calc(100vw - 32px)",
+        flexWrap: compact ? "nowrap" : "wrap",
         justifyContent: "center",
       }}
     >
@@ -413,21 +414,27 @@ function HubNav({
             onBlur={() => onHoverHub(null)}
             onClick={() => onPickHub(i)}
             style={{
-              padding: compact ? "6px 10px" : "8px 14px",
+              padding: compact ? "8px 4px" : "8px 14px",
+              flex: compact ? 1 : undefined,
+              minWidth: 0,
               borderRadius: 999,
               border: active
                 ? `0.5px solid ${ICE.accent}`
                 : "0.5px solid transparent",
               background: active ? "rgba(156, 213, 255, 0.16)" : "transparent",
               color: active ? ICE.hi : ICE.mid,
-              fontSize: compact ? 11.5 : 12.5,
+              fontSize: compact ? 11 : 12.5,
               fontFamily: "inherit",
-              letterSpacing: 0.2,
+              letterSpacing: compact ? 0.1 : 0.2,
               cursor: "pointer",
               transition: "all 0.2s ease",
               boxShadow: active
                 ? "inset 0 0 12px rgba(156,213,255,0.08), 0 0 16px rgba(156,213,255,0.18)"
                 : "none",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              textAlign: "center",
             }}
           >
             {h.label.toLowerCase()}

@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ICE,
   type DetailContent,
@@ -77,14 +77,20 @@ export default function NeuronDetail({
         .hd-projects-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
         .hd-hobbies-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
         .hd-experience-card { padding: 28px; display: grid; grid-template-columns: 72px 1fr; gap: 24px; align-items: start; }
+        .hd-more-btn { display: none; background: transparent; border: none; padding: 6px 0 0; margin: 0;
+                       color: rgba(156,213,255,0.7); font-size: 12px; letter-spacing: 0.4px;
+                       font-family: inherit; cursor: pointer; }
         @media (max-width: 720px) {
           .hd-pad { padding-left: 18px; padding-right: 18px; }
           .hd-h1 { font-size: 34px; letter-spacing: -0.4px; }
-          .hd-summary { font-size: 14px; }
+          .hd-summary { display: none; }
           .hd-about-grid { grid-template-columns: 1fr; gap: 20px; }
           .hd-projects-grid { grid-template-columns: 1fr; gap: 14px; }
           .hd-hobbies-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
           .hd-experience-card { padding: 18px; grid-template-columns: 56px 1fr; gap: 14px; }
+          .hd-clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+          .hd-clamp.expanded { display: block; -webkit-line-clamp: unset; }
+          .hd-more-btn { display: inline-block; }
         }
       `}</style>
 
@@ -390,6 +396,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
 }
 
 function ExperienceCard({ item }: { item: ExperienceItem }) {
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="hd-card hd-experience-card">
       <div
@@ -461,6 +468,7 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
           </span>
         </div>
         <p
+          className={`hd-clamp${expanded ? " expanded" : ""}`}
           style={{
             fontSize: 14,
             lineHeight: 1.6,
@@ -471,6 +479,13 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
         >
           {item.details}
         </p>
+        <button
+          type="button"
+          className="hd-more-btn"
+          onClick={() => setExpanded((e) => !e)}
+        >
+          {expanded ? "less ↑" : "more ↓"}
+        </button>
       </div>
     </div>
   );
@@ -498,6 +513,7 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
 }
 
 function ProjectCard({ project }: { project: ProjectItem }) {
+  const [expanded, setExpanded] = useState(false);
   const Wrapper: React.ElementType = project.link ? "a" : "div";
   const wrapperProps = project.link
     ? {
@@ -593,6 +609,7 @@ function ProjectCard({ project }: { project: ProjectItem }) {
           )}
         </div>
         <p
+          className={`hd-clamp${expanded ? " expanded" : ""}`}
           style={{
             fontSize: 13,
             lineHeight: 1.55,
@@ -603,6 +620,17 @@ function ProjectCard({ project }: { project: ProjectItem }) {
         >
           {project.description}
         </p>
+        <button
+          type="button"
+          className="hd-more-btn"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setExpanded((v) => !v);
+          }}
+        >
+          {expanded ? "less ↑" : "more ↓"}
+        </button>
       </div>
     </Wrapper>
   );
