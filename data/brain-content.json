@@ -281,6 +281,11 @@
       "visited": [
         { "name": "Canada", "year": "<2021" },
         { "name": "Mexico", "year": "<2021" },
+        { "name": "Costa Rica", "year": "<2021" },
+        { "name": "Bahamas", "year": "<2021" },
+        { "name": "Dominican Rep.", "year": "<2021" },
+        { "name": "Cuba", "year": "<2021" },
+        { "name": "Puerto Rico", "year": "<2021" },
         { "name": "Iceland", "year": 2022 },
         { "name": "Italy", "year": 2023 },
         { "name": "France", "year": 2023 },
