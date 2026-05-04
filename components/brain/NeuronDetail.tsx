@@ -124,14 +124,14 @@ export default function NeuronDetail({
         .hd-about-grid { display: grid; gap: 32px; grid-template-columns: minmax(240px, 320px) 1fr; align-items: start; }
         .hd-projects-grid { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
         .hd-project-card:hover { transform: translateY(-2px); border-color: rgba(156, 213, 255, 0.32); }
-        .hd-experience-card { padding: 28px; display: grid; grid-template-columns: 72px 1fr; gap: 24px; align-items: start; }
+        .hd-experience-card { padding: 16px 22px; display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: center; }
         @media (max-width: 720px) {
           .hd-pad { padding-left: 18px; padding-right: 18px; }
           .hd-h1 { font-size: 34px; letter-spacing: -0.4px; }
           .hd-summary { font-size: 14px; }
           .hd-about-grid { grid-template-columns: 1fr; gap: 20px; }
           .hd-projects-grid { grid-template-columns: 1fr; gap: 14px; }
-          .hd-experience-card { padding: 18px; grid-template-columns: 56px 1fr; gap: 14px; }
+          .hd-experience-card { padding: 14px 16px; grid-template-columns: 40px 1fr; gap: 12px; }
         }
       `}</style>
 
@@ -496,9 +496,8 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
         style={{
           paddingBottom: 80,
           display: "grid",
-          gap: 14,
+          gap: 12,
           gridTemplateColumns: "1fr",
-          maxWidth: 880 + 112, // 880 content + hd-pad (56*2)
         }}
       >
         {items.map((item) => (
@@ -532,8 +531,8 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
           src={item.logo}
           alt={item.company}
           fill
-          sizes="72px"
-          style={{ objectFit: "contain", padding: 8 }}
+          sizes="44px"
+          style={{ objectFit: "contain", padding: 5 }}
         />
       </div>
       <div>
