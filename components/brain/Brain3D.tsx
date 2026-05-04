@@ -14,31 +14,52 @@ import {
   ROTATE_SENSITIVITY,
   cerebellumRadius,
   computeHubPositions,
+  computeSubDotPositions,
   cortexRadius,
   fissureKeep,
   type Hub,
+  type SubDot,
 } from "@/lib/brain";
 import { useIsMobile } from "./use-mobile";
 
 type Props = {
   hubs: Hub[];
+  subDots: SubDot[];
   onHubHover: (idx: number | null) => void;
   onHubClick: (idx: number) => void;
+  onSubHover: (id: string | null) => void;
+  onSubClick: (info: {
+    id: string;
+    slug: string;
+    parentId: string;
+    parentIdx: number;
+  }) => void;
+  onSubScreenUpdate?: (
+    positions: Array<{ id: string; x: number; y: number; z: number }>,
+  ) => void;
   activeHub: number | null;
   expandedHub: number | null;
+  hoveredSubId: string | null;
 };
 
 type HubScreen = { x: number; y: number; z: number; idx: number };
 
 export default function Brain3D({
   hubs,
+  subDots,
   onHubHover,
   onHubClick,
+  onSubHover,
+  onSubClick,
+  onSubScreenUpdate,
   activeHub,
   expandedHub,
+  hoveredSubId,
 }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const activeHubRef = useRef<number | null>(null);
+  const hoveredSubIdRef = useRef<string | null>(null);
+  const onSubScreenUpdateRef = useRef(onSubScreenUpdate);
   const [ready, setReady] = useState(false);
   const [hubScreen, setHubScreen] = useState<HubScreen[]>([]);
   const isMobile = useIsMobile();
@@ -46,6 +67,14 @@ export default function Brain3D({
   useEffect(() => {
     activeHubRef.current = activeHub;
   }, [activeHub]);
+
+  useEffect(() => {
+    hoveredSubIdRef.current = hoveredSubId;
+  }, [hoveredSubId]);
+
+  useEffect(() => {
+    onSubScreenUpdateRef.current = onSubScreenUpdate;
+  }, [onSubScreenUpdate]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -59,7 +88,6 @@ export default function Brain3D({
       0.1,
       1000,
     );
-    // Pull camera back further on narrow viewports so hub labels don't clip.
     const cameraZForAspect = (aspect: number) => {
       const base = 5.4;
       return aspect >= 1 ? base : base * (1 / Math.max(0.45, aspect));
@@ -100,7 +128,6 @@ export default function Brain3D({
     };
     const sprite = makeSprite();
 
-    // Seeded RNG - stable cluster layout across reloads.
     const rng = (() => {
       let s = 17;
       return () => {
@@ -280,7 +307,7 @@ export default function Brain3D({
     const cloud = new THREE.Points(geom, mat);
     tilt.add(cloud);
 
-    // Hub sprite texture
+    // Hub sprite texture (bright)
     const hubSpriteTex = (() => {
       const c = document.createElement("canvas");
       c.width = c.height = 128;
@@ -289,6 +316,21 @@ export default function Brain3D({
       g.addColorStop(0, "rgba(255,255,255,1)");
       g.addColorStop(0.18, "rgba(220,238,255,1)");
       g.addColorStop(0.4, "rgba(156,213,255,0.7)");
+      g.addColorStop(1, "rgba(156,213,255,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 128, 128);
+      return new THREE.CanvasTexture(c);
+    })();
+
+    // Sub-dot sprite texture (faint — same gradient, ~half opacity)
+    const subSpriteTex = (() => {
+      const c = document.createElement("canvas");
+      c.width = c.height = 128;
+      const ctx = c.getContext("2d")!;
+      const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      g.addColorStop(0, "rgba(255,255,255,0.95)");
+      g.addColorStop(0.22, "rgba(220,238,255,0.55)");
+      g.addColorStop(0.5, "rgba(156,213,255,0.25)");
       g.addColorStop(1, "rgba(156,213,255,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, 128, 128);
@@ -313,11 +355,92 @@ export default function Brain3D({
         h.pos[1] * BRAIN_SCALE,
         h.pos[2] * BRAIN_SCALE,
       );
-      s.userData.idx = i;
+      s.userData = { kind: "hub", idx: i };
       hubGroup.add(s);
       hubMeshes.push(s);
     });
     tilt.add(hubGroup);
+
+    // Sub-dots and connector lines
+    const subsResolved = computeSubDotPositions(hubsResolved, subDots);
+    const subGroup = new THREE.Group();
+    const subLineGroup = new THREE.Group();
+    const subMeshes: THREE.Sprite[] = [];
+    type SubLine = {
+      line: THREE.Line;
+      material: THREE.LineBasicMaterial;
+      currentOpacity: number;
+    };
+    const subLines: SubLine[] = [];
+    type SubInfo = {
+      id: string;
+      slug: string;
+      parentId: string;
+      parentIdx: number;
+      currentScale: number;
+      currentColor: number;
+    };
+    const subInfos: SubInfo[] = [];
+
+    subsResolved.forEach((s) => {
+      const sm = new THREE.SpriteMaterial({
+        map: subSpriteTex,
+        color: 0xffffff,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        opacity: 0.85,
+      });
+      const subSprite = new THREE.Sprite(sm);
+      subSprite.scale.set(0.14, 0.14, 1);
+      subSprite.position.set(
+        s.pos[0] * BRAIN_SCALE,
+        s.pos[1] * BRAIN_SCALE,
+        s.pos[2] * BRAIN_SCALE,
+      );
+      subSprite.userData = {
+        kind: "sub",
+        id: s.id,
+        slug: s.slug,
+        parentId: s.parentId,
+        parentIdx: s.parentIdx,
+      };
+      subGroup.add(subSprite);
+      subMeshes.push(subSprite);
+      subInfos.push({
+        id: s.id,
+        slug: s.slug,
+        parentId: s.parentId,
+        parentIdx: s.parentIdx,
+        currentScale: 0.14,
+        currentColor: 0.7,
+      });
+
+      // Connector line
+      const lineGeom = new THREE.BufferGeometry();
+      const verts = new Float32Array([
+        s.parentPos[0] * BRAIN_SCALE,
+        s.parentPos[1] * BRAIN_SCALE,
+        s.parentPos[2] * BRAIN_SCALE,
+        s.pos[0] * BRAIN_SCALE,
+        s.pos[1] * BRAIN_SCALE,
+        s.pos[2] * BRAIN_SCALE,
+      ]);
+      lineGeom.setAttribute("position", new THREE.BufferAttribute(verts, 3));
+      const lineMat = new THREE.LineBasicMaterial({
+        color: new THREE.Color(ICE.accent),
+        transparent: true,
+        opacity: 0.18,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const line = new THREE.Line(lineGeom, lineMat);
+      subLineGroup.add(line);
+      subLines.push({ line, material: lineMat, currentOpacity: 0.18 });
+    });
+
+    tilt.add(subLineGroup);
+    tilt.add(subGroup);
 
     setReady(true);
 
@@ -369,18 +492,35 @@ export default function Brain3D({
 
     // Hover & click picking
     const raycaster = new THREE.Raycaster();
+    if (isMobile) {
+      raycaster.params.Sprite = { threshold: 0.08 };
+    }
     const mouse = new THREE.Vector2();
+    const pickables = (): THREE.Object3D[] => [...hubMeshes, ...subMeshes];
+
     const onHover = (e: PointerEvent) => {
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      const hits = raycaster.intersectObjects(hubMeshes, false);
+      const hits = raycaster.intersectObjects(pickables(), false);
       if (hits.length) {
-        onHubHover(hits[0].object.userData.idx as number);
+        const ud = hits[0].object.userData as {
+          kind: "hub" | "sub";
+          idx?: number;
+          id?: string;
+        };
+        if (ud.kind === "hub") {
+          onHubHover(ud.idx as number);
+          onSubHover(null);
+        } else {
+          onHubHover(null);
+          onSubHover(ud.id as string);
+        }
         renderer.domElement.style.cursor = "pointer";
       } else {
         onHubHover(null);
+        onSubHover(null);
         renderer.domElement.style.cursor = dragging ? "grabbing" : "grab";
       }
     };
@@ -389,8 +529,26 @@ export default function Brain3D({
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      const hits = raycaster.intersectObjects(hubMeshes, false);
-      if (hits.length) onHubClick(hits[0].object.userData.idx as number);
+      const hits = raycaster.intersectObjects(pickables(), false);
+      if (!hits.length) return;
+      const ud = hits[0].object.userData as {
+        kind: "hub" | "sub";
+        idx?: number;
+        id?: string;
+        slug?: string;
+        parentId?: string;
+        parentIdx?: number;
+      };
+      if (ud.kind === "hub") {
+        onHubClick(ud.idx as number);
+      } else {
+        onSubClick({
+          id: ud.id as string,
+          slug: ud.slug as string,
+          parentId: ud.parentId as string,
+          parentIdx: ud.parentIdx as number,
+        });
+      }
     };
     renderer.domElement.addEventListener("pointermove", onHover);
     renderer.domElement.addEventListener("click", onCanvasClick);
@@ -416,6 +574,32 @@ export default function Brain3D({
         m.scale.set(base * big, base * big, 1);
       });
 
+      // Sub-dot animation: idle faint, brighten when parent or self is hovered
+      const hoveredSub = hoveredSubIdRef.current;
+      subMeshes.forEach((m, i) => {
+        const info = subInfos[i];
+        const parentHovered = info.parentIdx === cur;
+        const selfHovered = hoveredSub === info.id;
+        const targetScale = selfHovered ? 0.26 : parentHovered ? 0.2 : 0.14;
+        const targetOpacity = selfHovered ? 1.0 : parentHovered ? 0.95 : 0.7;
+        info.currentScale += (targetScale - info.currentScale) * 0.12;
+        info.currentColor += (targetOpacity - info.currentColor) * 0.12;
+        const pulse = Math.sin(t * 1.0 + i * 0.7) * 0.018;
+        const s = info.currentScale + pulse;
+        m.scale.set(s, s, 1);
+        const matSub = m.material as THREE.SpriteMaterial;
+        matSub.opacity = info.currentColor;
+      });
+
+      subLines.forEach((sl, i) => {
+        const info = subInfos[i];
+        const parentHovered = info.parentIdx === cur;
+        const selfHovered = hoveredSub === info.id;
+        const target = selfHovered ? 0.55 : parentHovered ? 0.45 : 0.18;
+        sl.currentOpacity += (target - sl.currentOpacity) * 0.12;
+        sl.material.opacity = sl.currentOpacity;
+      });
+
       const out: HubScreen[] = [];
       const screenRect = renderer.domElement.getBoundingClientRect();
       hubMeshes.forEach((m, i) => {
@@ -428,7 +612,25 @@ export default function Brain3D({
           idx: i,
         });
       });
-      if (((now / 16) | 0) % 2 === 0) setHubScreen(out);
+
+      // Sub-dot screen positions (throttled to ~30hz like hubs)
+      const everyOther = ((now / 16) | 0) % 2 === 0;
+      if (everyOther) {
+        setHubScreen(out);
+        if (onSubScreenUpdateRef.current) {
+          const subOut = subMeshes.map((m, i) => {
+            m.getWorldPosition(v);
+            v.project(camera);
+            return {
+              id: subInfos[i].id,
+              x: (v.x * 0.5 + 0.5) * screenRect.width,
+              y: (-v.y * 0.5 + 0.5) * screenRect.height,
+              z: v.z,
+            };
+          });
+          onSubScreenUpdateRef.current(subOut);
+        }
+      }
 
       renderer.render(scene, camera);
       raf = requestAnimationFrame(tick);
@@ -448,6 +650,13 @@ export default function Brain3D({
       mat.dispose();
       sprite.dispose();
       hubSpriteTex.dispose();
+      subSpriteTex.dispose();
+      subLines.forEach((sl) => {
+        sl.material.dispose();
+        sl.line.geometry.dispose();
+      });
+      subMeshes.forEach((m) => (m.material as THREE.SpriteMaterial).dispose());
+      hubMeshes.forEach((m) => (m.material as THREE.SpriteMaterial).dispose());
       renderer.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,15 +1,24 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { ICE, type BrainData, type Hub, type HubId } from "@/lib/brain";
+import {
+  ICE,
+  type BrainData,
+  type Hub,
+  type HubId,
+  type SubDot,
+} from "@/lib/brain";
 import FloatingThoughts from "./FloatingThoughts";
 import NeuronDetail from "./NeuronDetail";
 import NeuronPanel from "./NeuronPanel";
 import { useIsMobile } from "./use-mobile";
 
 const Brain3D = dynamic(() => import("./Brain3D"), { ssr: false });
+
+type SubScreenPos = { id: string; x: number; y: number; z: number };
 
 export default function BrainPage({
   data,
@@ -21,6 +30,10 @@ export default function BrainPage({
   const [hover, setHover] = useState<number | null>(null);
   const [expanded, setExpanded] = useState<number | null>(null);
   const [anchor, setAnchor] = useState({ x: 0.5, y: 0.5 });
+  const [hoveredSubId, setHoveredSubId] = useState<string | null>(null);
+  const [subScreenPositions, setSubScreenPositions] = useState<SubScreenPos[]>(
+    [],
+  );
   const route = initialRoute;
   const router = useRouter();
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -40,6 +53,31 @@ export default function BrainPage({
     }
     setExpanded(idx);
   };
+
+  const onSubClick = (info: {
+    id: string;
+    slug: string;
+    parentId: string;
+    parentIdx: number;
+  }) => {
+    if (info.parentId === "about") {
+      const link = data.details.about.links.find(
+        (l) => l.label.toLowerCase() === info.slug.toLowerCase(),
+      );
+      if (link?.href) {
+        window.open(link.href, "_blank", "noopener,noreferrer");
+        return;
+      }
+    }
+    router.push(`/${info.parentId}#${info.slug}`);
+  };
+
+  const hoveredSub: SubDot | null = hoveredSubId
+    ? (data.subDots.find((s) => s.id === hoveredSubId) ?? null)
+    : null;
+  const hoveredSubScreen = hoveredSubId
+    ? (subScreenPositions.find((p) => p.id === hoveredSubId) ?? null)
+    : null;
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -75,10 +113,15 @@ export default function BrainPage({
 
           <Brain3D
             hubs={data.hubs}
+            subDots={data.subDots}
             onHubHover={setHover}
             onHubClick={onHubClick}
+            onSubHover={setHoveredSubId}
+            onSubClick={onSubClick}
+            onSubScreenUpdate={setSubScreenPositions}
             activeHub={hover}
             expandedHub={expanded}
+            hoveredSubId={hoveredSubId}
           />
 
           <div
@@ -357,6 +400,15 @@ export default function BrainPage({
             <HoverChip hub={data.hubs[hover]} compact={isMobile} />
           )}
 
+          {hoveredSub && hoveredSubScreen && expanded === null && (
+            <SubHoverChip
+              sub={hoveredSub}
+              details={data.details}
+              x={hoveredSubScreen.x}
+              y={hoveredSubScreen.y}
+            />
+          )}
+
           {expanded === null && (
             <FloatingThoughts thoughts={data.thoughts} compact={isMobile} />
           )}
@@ -466,6 +518,138 @@ function HoverChip({ hub, compact = false }: { hub: Hub; compact?: boolean }) {
           · {hub.recent}
         </span>
       )}
+    </div>
+  );
+}
+
+function SubHoverChip({
+  sub,
+  details,
+  x,
+  y,
+}: {
+  sub: SubDot;
+  details: BrainData["details"];
+  x: number;
+  y: number;
+}) {
+  let thumb: string | null = null;
+  let title = sub.label;
+  let subtitle = "";
+
+  if (sub.kind === "project") {
+    const p = details.projects.find((pr) => pr.slug === sub.slug);
+    if (p) {
+      thumb = p.image;
+      title = p.name;
+      subtitle = p.description;
+    }
+  } else if (sub.kind === "experience") {
+    const e = details.experience.find((ex) => ex.slug === sub.slug);
+    if (e) {
+      thumb = e.logo;
+      title = e.company;
+      subtitle = `${e.role} · ${e.dates}`;
+    }
+  } else if (sub.kind === "trip") {
+    const photos = details.travel.photos.filter((p) => p.trip === sub.label);
+    thumb = photos[0]?.src ?? null;
+    title = sub.label;
+    const wheres = Array.from(new Set(photos.map((p) => p.where)));
+    subtitle = wheres.join(" · ");
+  } else if (sub.kind === "link") {
+    const link = details.about.links.find(
+      (l) => l.label.toLowerCase() === sub.slug.toLowerCase(),
+    );
+    title = sub.label;
+    if (link?.href) {
+      try {
+        const u = new URL(link.href);
+        subtitle = `${u.hostname.replace(/^www\./, "")}${u.pathname.replace(/\/$/, "")}`;
+      } catch {
+        subtitle = link.href;
+      }
+    }
+  }
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: x,
+        top: y,
+        transform: "translate(-50%, calc(-100% - 18px))",
+        zIndex: 6,
+        pointerEvents: "none",
+        padding: "10px 14px 10px 12px",
+        background: "rgba(12, 20, 36, 0.78)",
+        backdropFilter: "blur(20px) saturate(140%)",
+        WebkitBackdropFilter: "blur(20px) saturate(140%)",
+        border: `0.5px solid ${ICE.hairline}`,
+        borderRadius: 12,
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        maxWidth: 320,
+        boxShadow:
+          "0 12px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(220,238,255,0.05)",
+        animation: "sub-chip-in 0.18s ease",
+      }}
+    >
+      {thumb && (
+        <div
+          style={{
+            position: "relative",
+            width: 36,
+            height: 36,
+            flex: "0 0 36px",
+            borderRadius: 8,
+            overflow: "hidden",
+            border: "0.5px solid rgba(156,213,255,0.18)",
+            background: "rgba(0,0,0,0.3)",
+          }}
+        >
+          <Image
+            src={thumb}
+            alt={title}
+            fill
+            sizes="36px"
+            style={{ objectFit: "cover" }}
+          />
+        </div>
+      )}
+      <div style={{ minWidth: 0 }}>
+        <div
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: 14,
+            color: ICE.hi,
+            letterSpacing: 0.2,
+            lineHeight: 1.2,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {title}
+        </div>
+        {subtitle && (
+          <div
+            style={{
+              fontSize: 11,
+              color: ICE.low,
+              marginTop: 2,
+              lineHeight: 1.35,
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {subtitle}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -143,6 +143,92 @@ export function computeHubPositions(hubs: Hub[]): ResolvedHub[] {
   });
 }
 
+export function tripSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+// ── Sub-dots (children of a hub) ────────────────────────────────────────
+export type SubDotKind = "project" | "experience" | "trip" | "link";
+
+export type SubDot = {
+  id: string;
+  parentId: HubId;
+  label: string;
+  slug: string;
+  kind: SubDotKind;
+};
+
+export type ResolvedSubDot = SubDot & {
+  pos: [number, number, number];
+  parentPos: [number, number, number];
+  parentIdx: number;
+};
+
+function tangentBasis(n: [number, number, number]): {
+  t1: [number, number, number];
+  t2: [number, number, number];
+} {
+  const helper: [number, number, number] =
+    Math.abs(n[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0];
+  const cx = n[1] * helper[2] - n[2] * helper[1];
+  const cy = n[2] * helper[0] - n[0] * helper[2];
+  const cz = n[0] * helper[1] - n[1] * helper[0];
+  const len1 = Math.hypot(cx, cy, cz);
+  const t1: [number, number, number] = [cx / len1, cy / len1, cz / len1];
+  const dx = n[1] * t1[2] - n[2] * t1[1];
+  const dy = n[2] * t1[0] - n[0] * t1[2];
+  const dz = n[0] * t1[1] - n[1] * t1[0];
+  return { t1, t2: [dx, dy, dz] };
+}
+
+export function computeSubDotPositions(
+  parents: ResolvedHub[],
+  subs: SubDot[],
+): ResolvedSubDot[] {
+  const grouped = new Map<HubId, SubDot[]>();
+  for (const s of subs) {
+    const arr = grouped.get(s.parentId) ?? [];
+    arr.push(s);
+    grouped.set(s.parentId, arr);
+  }
+  const out: ResolvedSubDot[] = [];
+  parents.forEach((parent, parentIdx) => {
+    const children = grouped.get(parent.id);
+    if (!children || children.length === 0) return;
+    const nLen = Math.hypot(parent.dir[0], parent.dir[1], parent.dir[2]);
+    const n: [number, number, number] = [
+      parent.dir[0] / nLen,
+      parent.dir[1] / nLen,
+      parent.dir[2] / nLen,
+    ];
+    const { t1, t2 } = tangentBasis(n);
+    children.forEach((child, i) => {
+      const angle = (i * 137.50776 * Math.PI) / 180;
+      const radial = 0.34 + 0.07 * (i % 3);
+      const cx = Math.cos(angle) * radial;
+      const cy = Math.sin(angle) * radial;
+      const ux0 = n[0] + cx * t1[0] + cy * t2[0];
+      const uy0 = n[1] + cx * t1[1] + cy * t2[1];
+      const uz0 = n[2] + cx * t1[2] + cy * t2[2];
+      const len = Math.hypot(ux0, uy0, uz0);
+      const ux = ux0 / len,
+        uy = uy0 / len,
+        uz = uz0 / len;
+      const r = cortexRadius(ux, uy, uz) * 0.94;
+      out.push({
+        ...child,
+        pos: [ux * r, uy * r, uz * r],
+        parentPos: parent.pos,
+        parentIdx,
+      });
+    });
+  });
+  return out;
+}
+
 // ── Content types ───────────────────────────────────────────────────────
 export type Thread = { label: string; text: string };
 export type NeuronContent = {
@@ -174,6 +260,7 @@ export type AboutDetail = {
 };
 
 export type ExperienceItem = {
+  slug: string;
   company: string;
   role: string;
   dates: string;
@@ -183,6 +270,7 @@ export type ExperienceItem = {
 };
 
 export type ProjectItem = {
+  slug: string;
   name: string;
   award?: string;
   description: string;
@@ -224,4 +312,5 @@ export type BrainData = {
   neurons: Record<HubId, NeuronContent>;
   thoughts: Thought[];
   details: DetailContent;
+  subDots: SubDot[];
 };

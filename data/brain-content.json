@@ -150,6 +150,7 @@
 
     "experience": [
       {
+        "slug": "building-new",
         "company": "Building something new",
         "role": "Founder",
         "dates": "April 2026 → present",
@@ -158,6 +159,7 @@
         "details": "Left Citadel in April 2026 to start working on something new. Heads-down on it now - happy to talk about it over coffee if you reach out."
       },
       {
+        "slug": "citadel-securities",
         "company": "Citadel Securities",
         "role": "Full-Stack Engineer",
         "dates": "Full-time, 2024 - April 2026 · Internship, 2023",
@@ -166,6 +168,7 @@
         "details": "Joined full-time after interning the summer before, on a full-stack team. Spent a year shipping internal tooling for trading systems before leaving in April 2026 to build something new."
       },
       {
+        "slug": "phia",
         "company": "Phia",
         "role": "Data Engineer",
         "dates": "Part-time, 2024",
@@ -174,6 +177,7 @@
         "details": "Built out a pipeline for tracking purchases via affiliate-link UTM parameters, scraping data from 5+ partner networks and streaming into BigQuery. Set up a daily cron job on GCP. Owned the Amplitude analytics dashboard, instrumenting 30+ user-interaction metrics including DAU/MAU, AOV, and retention."
       },
       {
+        "slug": "vivid",
         "company": "Vivid",
         "role": "Growth Engineer",
         "dates": "Internship, Spring 2023",
@@ -182,6 +186,7 @@
         "details": "Owned the company's onboarding workflow - built an AI-powered internal tool that automatically links React components to their corresponding Figma designs. Designed and shipped the entire UX, prototyping in Figma and implementing in React, TypeScript, and Tailwind. Sat in on client meetings, investor updates, and customer-validation calls."
       },
       {
+        "slug": "microsoft",
         "company": "Microsoft",
         "role": "Back-End Engineer",
         "dates": "Internship, 2022",
@@ -190,6 +195,7 @@
         "details": "Engineered a new monitoring pipeline for Azure App Services, yielding a 30× improvement in the number of metrics logged. Synthesized data from 2,500+ cloud servers and wired together 4+ Azure platforms to cleanly stream logs into a Kusto database. Deployed to production, where it now actively tracks all Azure App Service servers on the cloud."
       },
       {
+        "slug": "meta",
         "company": "Meta",
         "role": "iOS Engineer",
         "dates": "Facebook University Internship, 2021",
@@ -198,6 +204,7 @@
         "details": "Independently developed a note-sharing and transcribing iOS app in Xcode and Objective-C, using Apple's Core ML API to convert handwriting in images to text. Programmed sort-by-class, search-by-caption, and find-friends functionality."
       },
       {
+        "slug": "mitre",
         "company": "MITRE",
         "role": "AI / ML Engineer",
         "dates": "Internship, 2018 · 2019 · 2020",
@@ -209,12 +216,14 @@
 
     "projects": [
       {
+        "slug": "speedster",
         "name": "Speedster",
         "image": "/sgu/speedster.png",
         "description": "Live tracker I built for my crew running the Brooklyn Half - wave-grouped pace cards, on-course status, and a course elevation chart. Next.js.",
         "link": "https://speedster-three.vercel.app/"
       },
       {
+        "slug": "goji-health",
         "name": "Goji Health",
         "image": "/sgu/goji.png",
         "award": "🏆 Winner - $15K, Columbia Venture Competition",
@@ -222,6 +231,7 @@
         "link": "https://github.com/sarah-gu/dumpling"
       },
       {
+        "slug": "senior-scramble",
         "name": "Senior Scramble",
         "image": "/sgu/seniorscramble.png",
         "award": "700+ active users in 1 month",
@@ -229,6 +239,7 @@
         "link": "https://github.com/sarah-gu/beautiful-landing-page"
       },
       {
+        "slug": "graze-pro",
         "name": "Graze Pro",
         "image": "/sgu/grazepro.png",
         "award": "🏆 Winner - TreeHacks 2023 (1000+ participants)",
@@ -236,24 +247,28 @@
         "link": "https://github.com/sarah-gu/graze-pro"
       },
       {
+        "slug": "fortunegpt",
         "name": "FortuneGPT",
         "image": "/sgu/fortunegpt.png",
         "description": "GPT-3-powered app that generates personalized fortunes and horoscopes.",
         "link": "https://github.com/sarah-gu/openai-api-testing"
       },
       {
+        "slug": "birthday-countdown",
         "name": "Birthday Countdown",
         "image": "/sgu/birthdaycountdown.png",
         "description": "Animated birthday countdown with photos and confetti. React + Tailwind.",
         "link": "https://github.com/sarah-gu/birthday-countdown"
       },
       {
+        "slug": "sound-match",
         "name": "Sound Match",
         "image": "/sgu/soundmatch.png",
         "description": "Audio-matching game that tests your ear for different frequencies and tunes. React + Tailwind.",
         "link": "https://github.com/sarah-gu/sound-match"
       },
       {
+        "slug": "coronavoice",
         "name": "CoronaVoice",
         "image": "/sgu/coronavoice.png",
         "award": "🏆 Winner - EarthxHack 2020 (800+ participants)",
@@ -261,12 +276,14 @@
         "link": "https://github.com/neeyanthkvk/mycovidtracker"
       },
       {
+        "slug": "fishbowl",
         "name": "Fishbowl",
         "image": "/sgu/fishbowl.png",
         "description": "One of my first projects - brought the party game Fishbowl online during COVID so friends could keep playing. Vanilla HTML, CSS, and JS.",
         "link": "https://github.com/sarah-gu/fishbowl"
       },
       {
+        "slug": "myaiscribe",
         "name": "myAIScribe",
         "image": "/sgu/myAIscribe.png",
         "description": "iOS app that transcribes handwriting from photos into shareable text notes using Apple's Core ML. Xcode + Objective-C.",

@@ -54,6 +54,23 @@ export default function NeuronDetail({
   const idx = hubs.findIndex((h) => h.id === hubId);
   const prev = idx >= 0 ? hubs[(idx - 1 + hubs.length) % hubs.length] : null;
   const next = idx >= 0 ? hubs[(idx + 1) % hubs.length] : null;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash) return;
+    const handle = window.setTimeout(() => {
+      const el = document.querySelector<HTMLElement>(
+        `[data-slug="${CSS.escape(hash)}"]`,
+      );
+      if (!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.classList.add("hd-pulse");
+      window.setTimeout(() => el.classList.remove("hd-pulse"), 1600);
+    }, 320);
+    return () => window.clearTimeout(handle);
+  }, [hubId]);
+
   return (
     <div
       style={{
@@ -71,6 +88,11 @@ export default function NeuronDetail({
     >
       <style>{`
         @keyframes hd-fade { from { opacity: 0; transform: scale(1.02); } to { opacity: 1; transform: scale(1); } }
+        @keyframes hd-pulse-kf {
+          0%, 100% { box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(220,238,255,0.05), 0 0 0 0 rgba(156,213,255,0); border-color: rgba(156,213,255,0.16); }
+          40% { box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(220,238,255,0.05), 0 0 0 3px rgba(156,213,255,0.45); border-color: rgba(156,213,255,0.6); }
+        }
+        .hd-pulse { animation: hd-pulse-kf 0.8s ease-in-out 2 !important; }
         .hd-card { background: linear-gradient(160deg, rgba(20,30,52,0.55) 0%, rgba(8,14,28,0.65) 100%);
                    backdrop-filter: blur(20px) saturate(140%);
                    -webkit-backdrop-filter: blur(20px) saturate(140%);
@@ -475,7 +497,11 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
 function ExperienceCard({ item }: { item: ExperienceItem }) {
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className="hd-card hd-experience-card">
+    <div
+      className="hd-card hd-experience-card"
+      data-slug={item.slug}
+      style={{ scrollMarginTop: 96, scrollMarginBottom: 96 }}
+    >
       <div
         style={{
           width: "100%",
@@ -611,6 +637,7 @@ function ProjectCard({ project }: { project: ProjectItem }) {
     <Wrapper
       {...wrapperProps}
       className="hd-card hd-project-card"
+      data-slug={project.slug}
       style={{
         padding: 0,
         overflow: "hidden",
@@ -620,6 +647,8 @@ function ProjectCard({ project }: { project: ProjectItem }) {
         color: "inherit",
         cursor: project.link ? "pointer" : "default",
         transition: "transform 0.25s ease, border-color 0.25s ease",
+        scrollMarginTop: 96,
+        scrollMarginBottom: 96,
       }}
     >
       <div

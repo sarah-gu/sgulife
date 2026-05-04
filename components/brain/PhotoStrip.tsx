@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Fragment, useMemo } from "react";
-import { ICE, type TravelPhoto } from "@/lib/brain";
+import { ICE, tripSlug, type TravelPhoto } from "@/lib/brain";
 
 type Props = {
   photos: TravelPhoto[];
@@ -110,8 +110,12 @@ export default function PhotoStrip({ photos }: Props) {
                 }}
               />
             )}
-            {g.photos.map((p) => (
-              <PhotoCard key={p.src} photo={p} />
+            {g.photos.map((p, pi) => (
+              <PhotoCard
+                key={p.src}
+                photo={p}
+                slug={pi === 0 ? tripSlug(g.trip) : undefined}
+              />
             ))}
           </Fragment>
         ))}
@@ -120,16 +124,19 @@ export default function PhotoStrip({ photos }: Props) {
   );
 }
 
-function PhotoCard({ photo }: { photo: TravelPhoto }) {
+function PhotoCard({ photo, slug }: { photo: TravelPhoto; slug?: string }) {
   return (
     <figure
       className="ps-card"
+      data-slug={slug}
       style={{
         margin: 0,
         flex: "0 0 auto",
         display: "flex",
         flexDirection: "column",
         gap: 8,
+        scrollMarginLeft: 24,
+        scrollMarginRight: 24,
       }}
     >
       <div
