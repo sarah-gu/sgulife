@@ -124,14 +124,14 @@ export default function NeuronDetail({
         .hd-about-grid { display: grid; gap: 32px; grid-template-columns: minmax(240px, 320px) 1fr; align-items: start; }
         .hd-projects-grid { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
         .hd-project-card:hover { transform: translateY(-2px); border-color: rgba(156, 213, 255, 0.32); }
-        .hd-experience-card { padding: 16px 22px; display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: center; }
+        .hd-experience-card { padding: 14px 22px; display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: center; }
         @media (max-width: 720px) {
           .hd-pad { padding-left: 18px; padding-right: 18px; }
           .hd-h1 { font-size: 34px; letter-spacing: -0.4px; }
           .hd-summary { font-size: 14px; }
           .hd-about-grid { grid-template-columns: 1fr; gap: 20px; }
           .hd-projects-grid { grid-template-columns: 1fr; gap: 14px; }
-          .hd-experience-card { padding: 14px 16px; grid-template-columns: 40px 1fr; gap: 12px; }
+          .hd-experience-card { padding: 12px 14px; grid-template-columns: 52px 1fr; gap: 12px; }
         }
       `}</style>
 
@@ -531,8 +531,8 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
           src={item.logo}
           alt={item.company}
           fill
-          sizes="44px"
-          style={{ objectFit: "contain", padding: 5 }}
+          sizes="64px"
+          style={{ objectFit: "contain", padding: 7 }}
         />
       </div>
       <div>
@@ -572,17 +572,46 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
         </div>
         <div
           style={{
-            fontSize: 14,
-            color: "rgba(220,238,255,0.82)",
-            marginBottom: expanded ? 12 : 8,
-            letterSpacing: 0.2,
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 16,
+            flexWrap: "wrap",
+            marginBottom: expanded ? 10 : 0,
           }}
         >
-          {item.role}
-          <span style={{ color: "rgba(220,238,255,0.4)" }}>
-            {" "}
-            · {item.blurb}
-          </span>
+          <div
+            style={{
+              fontSize: 14,
+              color: "rgba(220,238,255,0.82)",
+              letterSpacing: 0.2,
+            }}
+          >
+            {item.role}
+            <span style={{ color: "rgba(220,238,255,0.4)" }}>
+              {" "}
+              · {item.blurb}
+            </span>
+          </div>
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+            style={{
+              background: "transparent",
+              border: "none",
+              padding: 0,
+              color: ICE.accent,
+              opacity: 0.7,
+              cursor: "pointer",
+              fontFamily: "ui-monospace, monospace",
+              fontSize: 11,
+              letterSpacing: 1.2,
+              textTransform: "uppercase",
+              flexShrink: 0,
+            }}
+          >
+            {expanded ? "− less" : "+ details"}
+          </button>
         </div>
         {expanded && (
           <p
@@ -590,31 +619,13 @@ function ExperienceCard({ item }: { item: ExperienceItem }) {
               fontSize: 14,
               lineHeight: 1.6,
               color: "rgba(220,238,255,0.7)",
-              margin: "0 0 12px",
+              margin: 0,
               textWrap: "pretty",
             }}
           >
             {item.details}
           </p>
         )}
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-          style={{
-            background: "transparent",
-            border: "none",
-            padding: 0,
-            color: ICE.accent,
-            opacity: 0.7,
-            cursor: "pointer",
-            fontFamily: "ui-monospace, monospace",
-            fontSize: 11,
-            letterSpacing: 1.2,
-            textTransform: "uppercase",
-          }}
-        >
-          {expanded ? "− less" : "+ details"}
-        </button>
       </div>
     </div>
   );
