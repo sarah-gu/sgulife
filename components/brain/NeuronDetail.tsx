@@ -510,7 +510,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
       <HubTitle
         eyebrow={`${spellOut(items.length)} roles`}
         headline="Past roles."
-        summary="Internships at MITRE, Microsoft, Meta, Phia, and Vivid through college, then full-stack at Citadel Securities for a year. Left this April to start working on something new. Most of the work has been data and ML."
+        summary="Full-stack at Citadel Securities, then left this April to start something new. Prev at Phia, Vivid, Microsoft, Meta, MITRE."
       />
       <div
         className="hd-pad"
@@ -659,7 +659,7 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
       <HubTitle
         eyebrow={`${spellOut(items.length)} builds`}
         headline="Projects for fun."
-        summary="Brooklyn Half tracker for my running crew, the Senior Scramble dating site that pulled 700+ users in two weeks, and Goji Health (won $15K at Columbia's VC competition). Older ones below."
+        summary="Brooklyn Half tracker, Senior Scramble (700+ users in two weeks), Goji Health ($15K Columbia VC). Older below."
       />
       <div className="hd-pad hd-projects-grid" style={{ paddingBottom: 80 }}>
         {items.map((p) => (

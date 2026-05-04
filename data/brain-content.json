@@ -61,7 +61,7 @@
     },
     "experience": {
       "headline": "Past Roles.",
-      "summary": "Internships at MITRE, Microsoft, Meta, Phia, and Vivid through college, then full-stack at Citadel Securities for a year. Left this April to start working on something new. Most of the work has been data and ML.",
+      "summary": "Full-stack at Citadel Securities, then left this April to start something new. Prev at Phia, Vivid, Microsoft, Meta, MITRE.",
       "threads": [
         {
           "label": "Now",
@@ -213,7 +213,7 @@
         "image": "/sgu/seniorscramble.png",
         "award": "700+ active users in 1 month",
         "description": "Built Columbia's 2024 Senior Scramble site - 700+ users and hundreds of hours logged in two weeks. React, Prisma, AWS, PostgreSQL.",
-        "link": "https://github.com/sarah-gu/beautiful-landing-page"
+        "link": "https://senior-scramble.vercel.app/"
       },
       {
         "slug": "graze-pro",
@@ -221,28 +221,28 @@
         "image": "/sgu/grazepro.png",
         "award": "🏆 Winner - TreeHacks 2023 (1000+ participants)",
         "description": "Rotational-grazing prediction app built at TreeHacks. We got robbed hours before the hackathon and built the whole thing on three dorm monitors at Stanford.",
-        "link": "https://github.com/sarah-gu/graze-pro"
+        "link": "https://graze-pro.vercel.app/"
       },
       {
         "slug": "fortunegpt",
         "name": "FortuneGPT",
         "image": "/sgu/fortunegpt.png",
         "description": "GPT-3-powered app that generates personalized fortunes and horoscopes.",
-        "link": "https://github.com/sarah-gu/openai-api-testing"
+        "link": "https://fortune-gpt-mu.vercel.app/"
       },
       {
         "slug": "birthday-countdown",
         "name": "Birthday Countdown",
         "image": "/sgu/birthdaycountdown.png",
         "description": "Animated birthday countdown with photos and confetti. React + Tailwind.",
-        "link": "https://github.com/sarah-gu/birthday-countdown"
+        "link": "https://birthday-countdown-nu.vercel.app/"
       },
       {
         "slug": "sound-match",
         "name": "Sound Match",
         "image": "/sgu/soundmatch.png",
         "description": "Audio-matching game that tests your ear for different frequencies and tunes. React + Tailwind.",
-        "link": "https://github.com/sarah-gu/sound-match"
+        "link": "https://sound-match-two.vercel.app/"
       },
       {
         "slug": "coronavoice",
