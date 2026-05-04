@@ -32,8 +32,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/sgu-life.png",
-        width: 1249,
-        height: 679,
+        width: 1200,
+        height: 630,
         alt: "sgu.life - Sarah Gu's interactive brain portfolio",
       },
     ],
