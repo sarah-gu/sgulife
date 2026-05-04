@@ -60,7 +60,7 @@
       "metric": { "value": "NYC", "unit": "based", "sub": "open to coffee" }
     },
     "experience": {
-      "headline": "Seven chapters, MITRE to Citadel - and now building something new.",
+      "headline": "Past Roles.",
       "summary": "Internships at MITRE, Microsoft, Meta, Phia, and Vivid through college, then full-stack at Citadel Securities for a year. Left this April to start working on something new. Most of the work has been data and ML.",
       "threads": [
         {
@@ -76,7 +76,7 @@
           "text": "Microsoft (Azure monitoring), Facebook University iOS (2021), and three summers at MITRE (computer vision, BERT adversarial attacks, EEG-to-text)."
         }
       ],
-      "metric": { "value": "7", "unit": "chapters", "sub": "2018 → now" }
+      "metric": { "value": "7", "unit": "roles", "sub": "2018 → now" }
     },
     "travel": {
       "headline": "Most recently: Japan, Hong Kong, China.",

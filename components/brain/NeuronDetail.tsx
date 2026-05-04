@@ -477,7 +477,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
     <>
       <HubTitle
         eyebrow={`${spellOut(items.length)} roles`}
-        headline="Seven chapters, MITRE to Citadel - and now building something new."
+        headline="Past Roles."
         summary="Internships at MITRE, Microsoft, Meta, Phia, and Vivid through college, then full-stack at Citadel Securities for a year. Left this April to start working on something new. Most of the work has been data and ML."
       />
       <div
