@@ -90,10 +90,10 @@ export type Hub = HubBase & {
 
 export const HUBS_BASE: HubBase[] = [
   {
-    id: "about",
-    label: "About",
-    region: "Occipital",
-    dir: [0.15, 0.45, -0.85],
+    id: "projects",
+    label: "Projects",
+    region: "Frontal",
+    dir: [-0.45, 0.8, 0.4],
   },
   {
     id: "experience",
@@ -102,16 +102,16 @@ export const HUBS_BASE: HubBase[] = [
     dir: [-0.55, -0.3, -0.55],
   },
   {
-    id: "projects",
-    label: "Projects",
-    region: "Frontal",
-    dir: [-0.45, 0.8, 0.4],
-  },
-  {
     id: "travel",
     label: "Travel",
     region: "Parietal",
     dir: [0.55, 0.2, 0.75],
+  },
+  {
+    id: "about",
+    label: "About",
+    region: "Occipital",
+    dir: [0.15, 0.45, -0.85],
   },
 ];
 
@@ -136,7 +136,7 @@ export function computeHubPositions(hubs: Hub[]): ResolvedHub[] {
         CEREB_CENTER[2] + uz * r * 1.05,
       ];
     } else {
-      const r = cortexRadius(ux, uy, uz) * 1.06;
+      const r = cortexRadius(ux, uy, uz) * 0.86;
       pos = [ux * r, uy * r, uz * r];
     }
     return { ...h, pos };
@@ -217,7 +217,7 @@ export function computeSubDotPositions(
       const ux = ux0 / len,
         uy = uy0 / len,
         uz = uz0 / len;
-      const r = cortexRadius(ux, uy, uz) * 0.94;
+      const r = cortexRadius(ux, uy, uz) * 0.78;
       out.push({
         ...child,
         pos: [ux * r, uy * r, uz * r],

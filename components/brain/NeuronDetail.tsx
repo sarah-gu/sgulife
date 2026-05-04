@@ -9,7 +9,6 @@ import {
   type ExperienceItem,
   type Hub,
   type HubId,
-  type LinkRef,
   type ProjectItem,
   type AboutDetail,
   type TravelDetail,
@@ -121,7 +120,10 @@ export default function NeuronDetail({
         .hd-pad { padding-left: 56px; padding-right: 56px; }
         .hd-h1 { font-size: 60px; }
         .hd-summary { font-size: 17px; }
-        .hd-about-grid { display: grid; gap: 32px; grid-template-columns: minmax(240px, 320px) 1fr; align-items: start; }
+        .hd-about-stack { max-width: 580px; margin: 0 auto; padding: 24px 0 80px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .hd-about-rule { width: 36px; height: 0.5px; background: rgba(156,213,255,0.22); margin: 28px 0; }
+        .hd-social-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 0.5px solid rgba(156,213,255,0.16); background: rgba(156,213,255,0.04); color: rgba(220,238,255,0.78); font-size: 12px; letter-spacing: 0.2px; text-decoration: none; transition: all 0.15s ease; }
+        .hd-social-pill:hover { border-color: rgba(156,213,255,0.36); background: rgba(156,213,255,0.09); color: rgba(220,238,255,0.95); }
         .hd-projects-grid { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
         .hd-project-card:hover { transform: translateY(-2px); border-color: rgba(156, 213, 255, 0.32); }
         .hd-experience-card { padding: 14px 22px; display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: center; }
@@ -129,7 +131,7 @@ export default function NeuronDetail({
           .hd-pad { padding-left: 18px; padding-right: 18px; }
           .hd-h1 { font-size: 34px; letter-spacing: -0.4px; }
           .hd-summary { font-size: 14px; }
-          .hd-about-grid { grid-template-columns: 1fr; gap: 20px; }
+          .hd-about-stack { padding: 16px 0 60px; }
           .hd-projects-grid { grid-template-columns: 1fr; gap: 14px; }
           .hd-experience-card { padding: 12px 14px; grid-template-columns: 52px 1fr; gap: 12px; }
         }
@@ -354,17 +356,19 @@ function HubTitle({
 function AboutView({ about }: { about: AboutDetail }) {
   return (
     <>
-      <HubTitle eyebrow={about.name.toLowerCase()} headline={about.tagline} />
-      <div className="hd-pad hd-about-grid" style={{ paddingBottom: 80 }}>
-        <div className="hd-card" style={{ padding: 18, overflow: "hidden" }}>
+      <div className="hd-pad">
+        <div className="hd-about-stack">
           <div
             style={{
               position: "relative",
-              width: "100%",
-              aspectRatio: "3 / 4",
-              borderRadius: 10,
+              width: 140,
+              height: 140,
+              borderRadius: "50%",
               overflow: "hidden",
-              background: "rgba(0,0,0,0.3)",
+              border: "0.5px solid rgba(156,213,255,0.3)",
+              boxShadow:
+                "0 0 32px rgba(156,213,255,0.18), inset 0 0 0 1px rgba(220,238,255,0.06)",
+              flexShrink: 0,
             }}
           >
             <Image
@@ -372,113 +376,130 @@ function AboutView({ about }: { about: AboutDetail }) {
               alt={about.name}
               fill
               priority
-              sizes="320px"
+              sizes="140px"
               style={{ objectFit: "cover" }}
             />
           </div>
+
+          <h1
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: 34,
+              fontWeight: 400,
+              lineHeight: 1.1,
+              letterSpacing: -0.4,
+              color: ICE.hi,
+              margin: "22px 0 6px",
+            }}
+          >
+            {about.name}
+          </h1>
           <div
             style={{
-              marginTop: 16,
+              fontFamily: "var(--font-serif)",
+              fontSize: 16,
+              fontStyle: "italic",
+              color: "rgba(220,238,255,0.7)",
+              letterSpacing: 0.1,
+            }}
+          >
+            {about.tagline}
+          </div>
+          <div
+            style={{
+              marginTop: 10,
               display: "flex",
-              flexDirection: "column",
+              alignItems: "center",
+              gap: 8,
+              fontSize: 11,
+              color: "rgba(220,238,255,0.5)",
+              letterSpacing: 1.6,
+              textTransform: "uppercase",
+            }}
+          >
+            <span
+              style={{
+                width: 5,
+                height: 5,
+                borderRadius: 3,
+                background: ICE.accent,
+                boxShadow: `0 0 8px ${ICE.accent}`,
+              }}
+            />
+            <span>based in nyc</span>
+          </div>
+
+          <div className="hd-about-rule" />
+
+          <div style={{ width: "100%", textAlign: "left" }}>
+            {about.paragraphs.map((p, i) => (
+              <p
+                key={i}
+                style={{
+                  fontSize: 16,
+                  lineHeight: 1.7,
+                  color: "rgba(220,238,255,0.82)",
+                  margin: i === about.paragraphs.length - 1 ? 0 : "0 0 18px",
+                  textWrap: "pretty",
+                }}
+              >
+                {p}
+              </p>
+            ))}
+          </div>
+
+          <div className="hd-about-rule" />
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
               gap: 8,
             }}
           >
             {about.links.map((l) => (
-              <SocialLink key={l.label} link={l} />
+              <a
+                key={l.label}
+                className="hd-social-pill"
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {l.label.toLowerCase()}
+                <span style={{ color: ICE.accent, opacity: 0.6, fontSize: 10 }}>↗</span>
+              </a>
             ))}
           </div>
-        </div>
 
-        <div className="hd-card" style={{ padding: 32 }}>
-          <div className="hd-eyebrow" style={{ marginBottom: 14 }}>
-            {about.name}
-          </div>
-          {about.paragraphs.map((p, i) => (
-            <p
-              key={i}
-              style={{
-                fontSize: 16,
-                lineHeight: 1.65,
-                color: "rgba(220,238,255,0.82)",
-                margin: i === about.paragraphs.length - 1 ? 0 : "0 0 16px",
-                textWrap: "pretty",
-              }}
-            >
-              {p}
-            </p>
-          ))}
           <div
             style={{
               marginTop: 24,
-              paddingTop: 20,
-              borderTop: "0.5px solid rgba(156,213,255,0.12)",
-              display: "flex",
-              alignItems: "center",
-              gap: 14,
-              flexWrap: "wrap",
+              fontSize: 13,
+              color: "rgba(220,238,255,0.55)",
+              fontStyle: "italic",
+              letterSpacing: 0.2,
             }}
           >
+            always open to a coffee.{" "}
             <a
               href={about.links[0]?.href}
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                padding: "10px 18px",
-                background:
-                  "linear-gradient(180deg, rgba(156,213,255,0.18), rgba(110,170,230,0.12))",
-                border: "0.5px solid rgba(156,213,255,0.35)",
-                borderRadius: 8,
-                color: ICE.hi,
-                fontSize: 13,
-                fontWeight: 500,
-                letterSpacing: 0.3,
+                color: ICE.accent,
                 textDecoration: "none",
-                fontFamily: "inherit",
+                borderBottom: `0.5px solid ${ICE.accent}`,
+                paddingBottom: 1,
+                fontStyle: "normal",
               }}
             >
-              {about.contactCta} →
+              {about.contactCta.toLowerCase()} →
             </a>
-            <span
-              style={{
-                fontSize: 12,
-                color: "rgba(220,238,255,0.45)",
-                fontStyle: "italic",
-              }}
-            >
-              always open to a coffee
-            </span>
           </div>
         </div>
       </div>
     </>
-  );
-}
-
-function SocialLink({ link }: { link: LinkRef }) {
-  return (
-    <a
-      href={link.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "10px 14px",
-        borderRadius: 8,
-        border: "0.5px solid rgba(156,213,255,0.14)",
-        background: "rgba(156,213,255,0.03)",
-        color: "rgba(220,238,255,0.85)",
-        fontSize: 13,
-        textDecoration: "none",
-        fontFamily: "inherit",
-        letterSpacing: 0.2,
-      }}
-    >
-      <span>{link.label}</span>
-      <span style={{ color: ICE.accent, opacity: 0.7 }}>↗</span>
-    </a>
   );
 }
 
@@ -637,7 +658,7 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
     <>
       <HubTitle
         eyebrow={`${spellOut(items.length)} builds`}
-        headline="Stuff I've built - hackathons, school, weekends."
+        headline="Projects for fun."
         summary="Brooklyn Half tracker for my running crew, the Senior Scramble dating site that pulled 700+ users in two weeks, and Goji Health (won $15K at Columbia's VC competition). Older ones below."
       />
       <div className="hd-pad hd-projects-grid" style={{ paddingBottom: 80 }}>

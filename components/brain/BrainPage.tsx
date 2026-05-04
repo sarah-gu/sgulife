@@ -12,7 +12,6 @@ import {
   type SubDot,
 } from "@/lib/brain";
 import NeuronDetail from "./NeuronDetail";
-import NeuronPanel from "./NeuronPanel";
 import { useIsMobile } from "./use-mobile";
 
 const Brain3D = dynamic(() => import("./Brain3D"), { ssr: false });
@@ -27,8 +26,6 @@ export default function BrainPage({
   initialRoute: "brain" | HubId;
 }) {
   const [hover, setHover] = useState<number | null>(null);
-  const [expanded, setExpanded] = useState<number | null>(null);
-  const [anchor, setAnchor] = useState({ x: 0.5, y: 0.5 });
   const [hoveredSubId, setHoveredSubId] = useState<string | null>(null);
   const [subScreenPositions, setSubScreenPositions] = useState<SubScreenPos[]>(
     [],
@@ -39,18 +36,7 @@ export default function BrainPage({
   const isMobile = useIsMobile();
 
   const onHubClick = (idx: number) => {
-    const wrap = wrapRef.current;
-    if (!wrap) return;
-    const r = wrap.getBoundingClientRect();
-    const labelEl = wrap.querySelector(`[data-hub-idx="${idx}"]`);
-    if (labelEl) {
-      const lr = (labelEl as HTMLElement).getBoundingClientRect();
-      setAnchor({
-        x: (lr.left + lr.width / 2 - r.left) / r.width,
-        y: (lr.top + lr.height / 2 - r.top) / r.height,
-      });
-    }
-    setExpanded(idx);
+    router.push(`/${data.hubs[idx].id}`);
   };
 
   const onSubClick = (info: {
@@ -119,7 +105,7 @@ export default function BrainPage({
             onSubClick={onSubClick}
             onSubScreenUpdate={setSubScreenPositions}
             activeHub={hover}
-            expandedHub={expanded}
+            expandedHub={null}
             hoveredSubId={hoveredSubId}
           />
 
@@ -208,21 +194,20 @@ export default function BrainPage({
             </div>
           </div>
 
-          {expanded === null && (
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: isMobile ? 52 : 64,
-                transform: "translateX(-50%)",
-                zIndex: 4,
-                textAlign: "center",
-                pointerEvents: "none",
-                opacity: hover === null ? 1 : 0.4,
-                transition: "opacity 0.4s ease",
-                width: "min(640px, calc(100vw - 32px))",
-              }}
-            >
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: isMobile ? 52 : 64,
+              transform: "translateX(-50%)",
+              zIndex: 4,
+              textAlign: "center",
+              pointerEvents: "none",
+              opacity: hover === null ? 1 : 0.4,
+              transition: "opacity 0.4s ease",
+              width: "min(640px, calc(100vw - 32px))",
+            }}
+          >
               <div
                 style={{
                   display: "flex",
@@ -239,11 +224,12 @@ export default function BrainPage({
                 }}
               >
                 <span>hi, I&rsquo;m sarah gu</span>
-                <img
+                <Image
                   src="/sgu/sarahgu.jpg"
                   alt="Sarah Gu"
                   width={isMobile ? 38 : 52}
                   height={isMobile ? 38 : 52}
+                  sizes="52px"
                   style={{
                     width: isMobile ? 38 : 52,
                     height: isMobile ? 38 : 52,
@@ -300,12 +286,12 @@ export default function BrainPage({
                   }}
                 >
                   {[
-                    { src: "/sgu/columbia.svg", alt: "Columbia", h: 30 },
-                    { src: "/sgu/neo.png", alt: "Neo", h: 18 },
-                    { src: "/sgu/citadel-strip.png", alt: "Citadel Securities", h: 24 },
-                    { src: "/sgu/microsoft.svg", alt: "Microsoft", h: 18 },
-                    { src: "/sgu/meta.svg", alt: "Meta", h: 16 },
-                    { src: "/sgu/mitre.svg", alt: "MITRE", h: 14 },
+                    { src: "/sgu/columbia.svg", alt: "Columbia", h: 30, w: 39 },
+                    { src: "/sgu/neo.png", alt: "Neo", h: 18, w: 43 },
+                    { src: "/sgu/citadel-strip.png", alt: "Citadel Securities", h: 24, w: 49 },
+                    { src: "/sgu/microsoft.svg", alt: "Microsoft", h: 18, w: 84 },
+                    { src: "/sgu/meta.svg", alt: "Meta", h: 16, w: 79 },
+                    { src: "/sgu/mitre.svg", alt: "MITRE", h: 14, w: 49 },
                   ].map((logo, i, arr) => (
                     <span
                       key={logo.alt}
@@ -315,9 +301,11 @@ export default function BrainPage({
                         gap: 16,
                       }}
                     >
-                      <img
+                      <Image
                         src={logo.src}
                         alt={logo.alt}
+                        width={logo.w}
+                        height={logo.h}
                         style={{
                           height: logo.h,
                           width: "auto",
@@ -354,10 +342,9 @@ export default function BrainPage({
                   ? "tap a glowing region"
                   : "click a glowing region to explore"}
               </div>
-            </div>
-          )}
+          </div>
 
-          {expanded === null && hover === null && !isMobile && (
+          {hover === null && !isMobile && (
             <div
               style={{
                 position: "absolute",
@@ -395,11 +382,11 @@ export default function BrainPage({
             </div>
           )}
 
-          {hover !== null && expanded === null && (
+          {hover !== null && (
             <HoverChip hub={data.hubs[hover]} compact={isMobile} />
           )}
 
-          {hoveredSub && hoveredSubScreen && expanded === null && (
+          {hoveredSub && hoveredSubScreen && (
             <SubHoverChip
               sub={hoveredSub}
               details={data.details}
@@ -408,22 +395,11 @@ export default function BrainPage({
             />
           )}
 
-          {expanded !== null && (
-            <NeuronPanel
-              hub={data.hubs[expanded]}
-              content={data.neurons[data.hubs[expanded].id as HubId]}
-              anchor={anchor}
-              onClose={() => setExpanded(null)}
-              onOpenDetail={(id) => router.push(`/${id}`)}
-            />
-          )}
-
           <HubNav
             hubs={data.hubs}
             hovered={hover}
             onHoverHub={setHover}
             onPickHub={(idx) => router.push(`/${data.hubs[idx].id}`)}
-            disabled={expanded !== null}
             compact={isMobile}
           />
         </>
@@ -654,14 +630,12 @@ function HubNav({
   hovered,
   onHoverHub,
   onPickHub,
-  disabled,
   compact = false,
 }: {
   hubs: Hub[];
   hovered: number | null;
   onHoverHub: (idx: number | null) => void;
   onPickHub: (idx: number) => void;
-  disabled: boolean;
   compact?: boolean;
 }) {
   return (
@@ -673,9 +647,6 @@ function HubNav({
         right: compact ? 8 : undefined,
         transform: compact ? undefined : "translateX(-50%)",
         zIndex: 5,
-        opacity: disabled ? 0 : 1,
-        transition: "opacity 0.4s ease",
-        pointerEvents: disabled ? "none" : "auto",
         display: "flex",
         alignItems: "stretch",
         gap: compact ? 2 : 6,

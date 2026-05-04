@@ -42,7 +42,7 @@
     },
     "about": {
       "headline": "Software engineer and builder. ☺︎",
-      "summary": "I'm a software engineer in New York. Graduated Columbia in 2024, spent a year at Citadel Securities, and left this April to start working on something new.",
+      "summary": "I'm a software engineer in New York. Graduated Columbia in 2024, spent nearly two years at Citadel Securities, and left this April to start working on something new.",
       "threads": [
         {
           "label": "Now",
@@ -109,8 +109,8 @@
       "name": "Sarah Gu",
       "tagline": "software engineer and builder ☺︎",
       "paragraphs": [
-        "I'm a software engineer in New York. Graduated Columbia in 2024, spent a year at Citadel Securities, and left this April to start working on something new.",
-        "Earlier on: three summers at MITRE doing ML work, then internships at Microsoft, Meta, Phia, and Vivid.",
+        "I'm a software engineer in New York. Graduated Columbia in 2024, then worked at Citadel Securities. Left this April to start working on something new.",
+        "Earlier on: internships at Phia, Vivid, Microsoft, and Meta, and three summers at MITRE doing ML work.",
         "Outside of that I'm usually running, at the gym, eating, or out with my camera."
       ],
       "contactCta": "Send me a note",
@@ -120,6 +120,7 @@
           "href": "https://www.linkedin.com/in/sarahwgu/"
         },
         { "label": "GitHub", "href": "https://github.com/sarah-gu" },
+        { "label": "X", "href": "https://x.com/sarahwgu" },
         { "label": "Instagram", "href": "https://www.instagram.com/sarahwgu/" }
       ]
     },
