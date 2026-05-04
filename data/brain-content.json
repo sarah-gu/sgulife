@@ -23,7 +23,7 @@
   "neurons": {
     "projects": {
       "headline": "Hackathon wins, side bets, and one Senior Scramble.",
-      "summary": "Ten projects across hackathons, school, and weekends - a healthcare-supply-chain startup that won $15K, a campus dating site that pulled 700+ users in two weeks, a TreeHacks-winning pasture-grazing app I built on three dorm monitors after getting robbed, and most recently a Brooklyn Half tracker for my running crew.",
+      "summary": "Ten projects across hackathons, school, and weekends. Most recent: a Brooklyn Half tracker for my running crew.",
       "threads": [
         {
           "label": "Award-winning",
@@ -61,7 +61,7 @@
     },
     "experience": {
       "headline": "Seven chapters, MITRE to Citadel - and now building something new.",
-      "summary": "Three years of internships across Big Tech, defense, and pre-seed startups, then Citadel for a year. Left in April 2026 to start building something new. The thread: data and ML systems that real people actually use.",
+      "summary": "Internships at MITRE, Microsoft, Meta, Phia, and Vivid through college, then full-stack at Citadel Securities for a year. Left this April to start working on something new. Most of the work has been data and ML.",
       "threads": [
         {
           "label": "Now",
@@ -79,8 +79,8 @@
       "metric": { "value": "7", "unit": "chapters", "sub": "2018 → now" }
     },
     "travel": {
-      "headline": "Most recently: a loop through Japan, Hong Kong, and China.",
-      "summary": "I love traveling. The kind of trips that change the questions I ask - long walks, big mountains, places that feel a world away from NYC. Latest was an Asia loop: skiing Niseko and a few days in Tokyo, then Hong Kong, then home with family in China.",
+      "headline": "Most recently: Japan, Hong Kong, China.",
+      "summary": "Latest was Asia - Niseko skiing, a few days in Tokyo, Hong Kong, then home in China to see family.",
       "threads": [
         {
           "label": "Latest",
@@ -88,11 +88,11 @@
         },
         {
           "label": "Pilgrimage",
-          "text": "Camino de Santiago - slower, longer, the kind of trip that quiets everything else."
+          "text": "Camino de Santiago, a 30 day solo backpacking trip across Spain in 2023."
         },
         {
           "label": "Photography",
-          "text": "Travel pairs with my other obsession: photography. Lately a Fujifilm X-T50 in my pack on every trip."
+          "text": "I usually have a camera with me. Currently a Fujifilm X-T50."
         }
       ],
       "metric": {
@@ -292,8 +292,8 @@
     ],
 
     "travel": {
-      "headline": "I love traveling.",
-      "summary": "Most formatively, the 30-day pilgrimage across Spain on the Camino de Santiago. It was beautiful. Long walks, big mountains, places with a total resident population of 50 - that trip changed the questions I ask.",
+      "headline": "Past trips!",
+      "summary": "The most memorable was the Camino de Santiago, a 30 day solo backpacking trip I took in 2023.",
       "home": "United States of America",
       "visited": [
         { "name": "Canada", "year": 2025 },
@@ -306,7 +306,7 @@
         { "name": "Iceland", "year": 2022 },
         { "name": "Italy", "year": 2023 },
         { "name": "France", "year": 2023 },
-        { "name": "Spain", "year": 2024, "trek": "camino" },
+        { "name": "Spain", "year": 2023, "trek": "camino" },
         { "name": "Portugal", "year": 2024 },
         { "name": "Japan", "year": 2026 },
         { "name": "South Korea", "year": 2024 },

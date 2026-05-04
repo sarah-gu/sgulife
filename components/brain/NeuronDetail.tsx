@@ -478,7 +478,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
       <HubTitle
         eyebrow={`${spellOut(items.length)} roles`}
         headline="Seven chapters, MITRE to Citadel - and now building something new."
-        summary="Three years of internships across Big Tech, defense, and pre-seed startups, then Citadel for a year. Left in April 2026 to start something new. The thread: data and ML systems that real people actually use."
+        summary="Internships at MITRE, Microsoft, Meta, Phia, and Vivid through college, then full-stack at Citadel Securities for a year. Left this April to start working on something new. Most of the work has been data and ML."
       />
       <div
         className="hd-pad"
@@ -615,8 +615,8 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
     <>
       <HubTitle
         eyebrow={`${spellOut(items.length)} builds`}
-        headline="Hackathon wins, side bets, and one Senior Scramble."
-        summary="From a healthcare-supply-chain startup that won $15K, to Columbia's 2024 Senior Scramble (700+ users), to the rotational-grazing app I built on dorm monitors after getting robbed at TreeHacks."
+        headline="Stuff I've built - hackathons, school, weekends."
+        summary="Brooklyn Half tracker for my running crew, the Senior Scramble dating site that pulled 700+ users in two weeks, and Goji Health (won $15K at Columbia's VC competition). Older ones below."
       />
       <div className="hd-pad hd-projects-grid" style={{ paddingBottom: 80 }}>
         {items.map((p) => (
