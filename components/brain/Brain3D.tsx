@@ -58,6 +58,7 @@ export default function Brain3D({
 }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const activeHubRef = useRef<number | null>(null);
+  const hoveredHubIdxRef = useRef<number | null>(null);
   const hoveredSubIdRef = useRef<string | null>(null);
   const onSubScreenUpdateRef = useRef(onSubScreenUpdate);
   const [ready, setReady] = useState(false);
@@ -340,6 +341,8 @@ export default function Brain3D({
     const hubsResolved = computeHubPositions(hubs);
     const hubGroup = new THREE.Group();
     const hubMeshes: THREE.Sprite[] = [];
+    const hubHalos: THREE.Sprite[] = [];
+    const haloColor = new THREE.Color(ICE.accent);
     hubsResolved.forEach((h, i) => {
       const sm = new THREE.SpriteMaterial({
         map: hubSpriteTex,
@@ -358,6 +361,22 @@ export default function Brain3D({
       s.userData = { kind: "hub", idx: i };
       hubGroup.add(s);
       hubMeshes.push(s);
+
+      // Halo: faint glow that fades in on hover, telegraphs clickability
+      const haloMat = new THREE.SpriteMaterial({
+        map: hubSpriteTex,
+        color: haloColor,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const halo = new THREE.Sprite(haloMat);
+      halo.scale.set(0.7, 0.7, 1);
+      halo.position.copy(s.position);
+      halo.userData = { kind: "halo" };
+      hubGroup.add(halo);
+      hubHalos.push(halo);
     });
     tilt.add(hubGroup);
 
@@ -511,14 +530,17 @@ export default function Brain3D({
           id?: string;
         };
         if (ud.kind === "hub") {
+          hoveredHubIdxRef.current = ud.idx as number;
           onHubHover(ud.idx as number);
           onSubHover(null);
         } else {
+          hoveredHubIdxRef.current = null;
           onHubHover(null);
           onSubHover(ud.id as string);
         }
         renderer.domElement.style.cursor = "pointer";
       } else {
+        hoveredHubIdxRef.current = null;
         onHubHover(null);
         onSubHover(null);
         renderer.domElement.style.cursor = dragging ? "grabbing" : "grab";
@@ -566,12 +588,29 @@ export default function Brain3D({
       root.rotation.x += (rotX - root.rotation.x) * 0.12;
 
       const cur = activeHubRef.current;
+      const hov = hoveredHubIdxRef.current;
       hubMeshes.forEach((m, i) => {
         const isActive = i === cur;
+        const isHovered = i === hov && !isActive;
         const pulseAmp = isActive ? 0.025 : 0.075;
         const base = 0.3 + Math.sin(t * 1.4 + i * 1.3) * pulseAmp;
-        const big = isActive ? 1.55 : 1.0;
+        const targetBig = isActive ? 1.55 : isHovered ? 1.3 : 1.0;
+        const ud = m.userData as { idx: number; kind: string; bigCurrent?: number };
+        ud.bigCurrent = (ud.bigCurrent ?? 1.0) + (targetBig - (ud.bigCurrent ?? 1.0)) * 0.18;
+        const big = ud.bigCurrent;
         m.scale.set(base * big, base * big, 1);
+      });
+
+      // Halo: fade in on hover (not when active/expanded)
+      hubHalos.forEach((halo, i) => {
+        const isActive = i === cur;
+        const isHovered = i === hov && !isActive;
+        const targetOp = isHovered ? 0.55 : 0;
+        const haloMat = halo.material as THREE.SpriteMaterial;
+        haloMat.opacity += (targetOp - haloMat.opacity) * 0.18;
+        const haloPulse = isHovered ? 0.04 + Math.sin(t * 3) * 0.02 : 0;
+        const haloBase = 0.7 + haloPulse;
+        halo.scale.set(haloBase, haloBase, 1);
       });
 
       // Sub-dot animation: idle faint, brighten when parent or self is hovered
@@ -657,6 +696,7 @@ export default function Brain3D({
       });
       subMeshes.forEach((m) => (m.material as THREE.SpriteMaterial).dispose());
       hubMeshes.forEach((m) => (m.material as THREE.SpriteMaterial).dispose());
+      hubHalos.forEach((m) => (m.material as THREE.SpriteMaterial).dispose());
       renderer.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
