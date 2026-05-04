@@ -32,7 +32,18 @@ const TravelMap = dynamic(() => import("./TravelMap"), {
 
 const PhotoStrip = dynamic(() => import("./PhotoStrip"), { ssr: false });
 
-const SPELL = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+const SPELL = [
+  "zero",
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine",
+];
 const spellOut = (n: number) => (n < 10 ? SPELL[n] : String(n));
 
 type Props = {
@@ -477,7 +488,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
     <>
       <HubTitle
         eyebrow={`${spellOut(items.length)} roles`}
-        headline="Past Roles."
+        headline="Past roles."
         summary="Internships at MITRE, Microsoft, Meta, Phia, and Vivid through college, then full-stack at Citadel Securities for a year. Left this April to start working on something new. Most of the work has been data and ML."
       />
       <div
@@ -487,6 +498,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
           display: "grid",
           gap: 14,
           gridTemplateColumns: "1fr",
+          maxWidth: 880 + 112, // 880 content + hd-pad (56*2)
         }}
       >
         {items.map((item) => (
