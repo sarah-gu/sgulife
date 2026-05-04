@@ -255,8 +255,7 @@ export default function BrainPage({
                   textWrap: "balance",
                 }}
               >
-                software engineer + builder &middot; columbia cs &rsquo;24
-                &middot; ex-citadel &middot; building something new in nyc
+                software engineer in nyc. building something new.
               </div>
               <div
                 style={{

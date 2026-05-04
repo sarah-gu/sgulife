@@ -323,7 +323,7 @@ export default function Brain3D({
       return new THREE.CanvasTexture(c);
     })();
 
-    // Sub-dot sprite texture (faint — same gradient, ~half opacity)
+    // Sub-dot sprite texture (faint - same gradient, ~half opacity)
     const subSpriteTex = (() => {
       const c = document.createElement("canvas");
       c.width = c.height = 128;

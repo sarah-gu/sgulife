@@ -67,6 +67,12 @@ export default function NeuronDetail({
   const idx = hubs.findIndex((h) => h.id === hubId);
   const prev = idx >= 0 ? hubs[(idx - 1 + hubs.length) % hubs.length] : null;
   const next = idx >= 0 ? hubs[(idx + 1) % hubs.length] : null;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showTop, setShowTop] = useState(false);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0 });
+  }, [hubId]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -86,6 +92,10 @@ export default function NeuronDetail({
 
   return (
     <div
+      ref={scrollRef}
+      onScroll={(e) =>
+        setShowTop((e.target as HTMLDivElement).scrollTop > 480)
+      }
       style={{
         position: "absolute",
         inset: 0,
@@ -140,7 +150,14 @@ export default function NeuronDetail({
       <BrainBackdrop />
       <DetailHeader hubLabel={hubLabel} hubRegion={hubRegion} onBack={onBack} />
 
-      <div style={{ position: "relative", zIndex: 1 }}>
+      <div
+        key={hubId}
+        style={{
+          position: "relative",
+          zIndex: 1,
+          animation: "hd-fade 0.35s ease",
+        }}
+      >
         {hubId === "about" && <AboutView about={details.about} />}
         {hubId === "experience" && (
           <ExperienceView items={details.experience} />
@@ -151,6 +168,35 @@ export default function NeuronDetail({
           <NeuronFooter prev={prev} next={next} onNavigate={onNavigate} />
         )}
       </div>
+      <button
+        onClick={() =>
+          scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" })
+        }
+        aria-label="Back to top"
+        style={{
+          position: "fixed",
+          right: 24,
+          bottom: 96,
+          zIndex: 25,
+          width: 36,
+          height: 36,
+          borderRadius: 18,
+          border: "0.5px solid rgba(156,213,255,0.2)",
+          background: "rgba(5,8,16,0.7)",
+          backdropFilter: "blur(12px) saturate(140%)",
+          WebkitBackdropFilter: "blur(12px) saturate(140%)",
+          color: "rgba(220,238,255,0.75)",
+          fontSize: 14,
+          cursor: "pointer",
+          fontFamily: "inherit",
+          opacity: showTop ? 1 : 0,
+          pointerEvents: showTop ? "auto" : "none",
+          transform: showTop ? "translateY(0)" : "translateY(6px)",
+          transition: "opacity 0.2s ease, transform 0.2s ease",
+        }}
+      >
+        ↑
+      </button>
     </div>
   );
 }
@@ -252,10 +298,10 @@ function DetailHeader({
         zIndex: 10,
         paddingTop: 16,
         paddingBottom: 16,
-        background:
-          "linear-gradient(180deg, rgba(5,8,16,0.85) 0%, rgba(5,8,16,0) 100%)",
-        backdropFilter: "blur(8px)",
-        WebkitBackdropFilter: "blur(8px)",
+        background: "rgba(5,8,16,0.88)",
+        backdropFilter: "blur(16px) saturate(140%)",
+        WebkitBackdropFilter: "blur(16px) saturate(140%)",
+        borderBottom: "0.5px solid rgba(156,213,255,0.08)",
         display: "flex",
         alignItems: "center",
         gap: 16,
