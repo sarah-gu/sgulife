@@ -32,6 +32,9 @@ const TravelMap = dynamic(() => import("./TravelMap"), {
 
 const PhotoStrip = dynamic(() => import("./PhotoStrip"), { ssr: false });
 
+const SPELL = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+const spellOut = (n: number) => (n < 10 ? SPELL[n] : String(n));
+
 type Props = {
   hubId: HubId;
   hubLabel: string;
@@ -473,7 +476,7 @@ function ExperienceView({ items }: { items: ExperienceItem[] }) {
   return (
     <>
       <HubTitle
-        eyebrow={`${items.length} roles`}
+        eyebrow={`${spellOut(items.length)} roles`}
         headline="Seven chapters, MITRE to Citadel - and now building something new."
         summary="Three years of internships across Big Tech, defense, and pre-seed startups, then Citadel for a year. Left in April 2026 to start something new. The thread: data and ML systems that real people actually use."
       />
@@ -611,7 +614,7 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
   return (
     <>
       <HubTitle
-        eyebrow={`${items.length} builds`}
+        eyebrow={`${spellOut(items.length)} builds`}
         headline="Hackathon wins, side bets, and one Senior Scramble."
         summary="From a healthcare-supply-chain startup that won $15K, to Columbia's 2024 Senior Scramble (700+ users), to the rotational-grazing app I built on dorm monitors after getting robbed at TreeHacks."
       />
@@ -758,7 +761,7 @@ function TravelView({ travel }: { travel: TravelDetail }) {
         }
       `}</style>
       <HubTitle
-        eyebrow={`${travel.visited.length} countries`}
+        eyebrow={`${spellOut(travel.visited.length)} countries`}
         headline={travel.headline}
         summary={travel.summary}
       />
