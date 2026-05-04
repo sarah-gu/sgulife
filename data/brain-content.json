@@ -103,30 +103,6 @@
     }
   },
 
-  "thoughts": [
-    {
-      "kind": "question",
-      "text": "what would i build if no one was watching?"
-    },
-    { "kind": "reminder", "text": "Solidcore at 7. don't skip the leg day." },
-    {
-      "kind": "pattern",
-      "text": "the best ideas show up between the gym and the train"
-    },
-    {
-      "kind": "question",
-      "text": "is this the next side project, or a real one?"
-    },
-    {
-      "kind": "reminder",
-      "text": "write the friend back. text the one you've been meaning to."
-    },
-    {
-      "kind": "pattern",
-      "text": "every breakthrough has been preceded by a long walk"
-    }
-  ],
-
   "details": {
     "about": {
       "photo": "/sgu/sarahgu.jpg",

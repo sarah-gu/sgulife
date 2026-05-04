@@ -238,15 +238,6 @@ export type NeuronContent = {
   metric: { value: string; unit: string; sub: string };
 };
 
-export type ThoughtKind = "question" | "reminder" | "pattern";
-export type Thought = { kind: ThoughtKind; text: string };
-
-export const THOUGHT_KIND_LABELS: Record<ThoughtKind, string> = {
-  question: "asking",
-  reminder: "noticing",
-  pattern: "pattern",
-};
-
 // ── Detail content (deep-dive views per hub) ────────────────────────────
 export type LinkRef = { label: string; href: string };
 
@@ -310,7 +301,6 @@ export type DetailContent = {
 export type BrainData = {
   hubs: Hub[];
   neurons: Record<HubId, NeuronContent>;
-  thoughts: Thought[];
   details: DetailContent;
   subDots: SubDot[];
 };

@@ -6,7 +6,6 @@ import {
   type HubId,
   type NeuronContent,
   type SubDot,
-  type Thought,
   type DetailContent,
 } from "./brain";
 import content from "@/data/brain-content.json";
@@ -14,7 +13,6 @@ import content from "@/data/brain-content.json";
 type RawContent = {
   hubs: Record<HubId, { stat: string; recent: string }>;
   neurons: Record<HubId, NeuronContent>;
-  thoughts: Thought[];
   details: DetailContent;
 };
 
@@ -90,7 +88,6 @@ export function loadBrainData(): BrainData {
   return {
     hubs,
     neurons,
-    thoughts: c.thoughts,
     details: c.details,
     subDots: buildSubDots(c.details),
   };

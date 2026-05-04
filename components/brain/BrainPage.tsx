@@ -11,7 +11,6 @@ import {
   type HubId,
   type SubDot,
 } from "@/lib/brain";
-import FloatingThoughts from "./FloatingThoughts";
 import NeuronDetail from "./NeuronDetail";
 import NeuronPanel from "./NeuronPanel";
 import { useIsMobile } from "./use-mobile";
@@ -407,10 +406,6 @@ export default function BrainPage({
               x={hoveredSubScreen.x}
               y={hoveredSubScreen.y}
             />
-          )}
-
-          {expanded === null && (
-            <FloatingThoughts thoughts={data.thoughts} compact={isMobile} />
           )}
 
           {expanded !== null && (
