@@ -193,6 +193,13 @@
 
     "projects": [
       {
+        "slug": "perch",
+        "name": "Perch",
+        "image": "/sgu/perch.png",
+        "description": "Compare apartments by what you care about. AI parses your interests and maps distance to each.",
+        "link": "https://getperch.xyz/map"
+      },
+      {
         "slug": "speedster",
         "name": "Speedster",
         "image": "/sgu/speedster.png",

@@ -659,7 +659,7 @@ function ProjectsView({ items }: { items: ProjectItem[] }) {
       <HubTitle
         eyebrow={`${spellOut(items.length)} builds`}
         headline="Projects for fun."
-        summary="Brooklyn Half tracker, Senior Scramble (700+ users in two weeks), Goji Health ($15K Columbia VC). Older below."
+        summary="Perch (AI apartment hunting), Brooklyn Half tracker, Senior Scramble (700+ users in two weeks), Goji Health ($15K Columbia VC). Older below."
       />
       <div className="hd-pad hd-projects-grid" style={{ paddingBottom: 80 }}>
         {items.map((p) => (
