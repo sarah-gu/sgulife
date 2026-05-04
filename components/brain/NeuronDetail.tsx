@@ -111,7 +111,7 @@ export default function NeuronDetail({
         .hd-h1 { font-size: 60px; }
         .hd-summary { font-size: 17px; }
         .hd-about-grid { display: grid; gap: 32px; grid-template-columns: minmax(240px, 320px) 1fr; align-items: start; }
-        .hd-projects-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+        .hd-projects-grid { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
         .hd-project-card:hover { transform: translateY(-2px); border-color: rgba(156, 213, 255, 0.32); }
         .hd-experience-card { padding: 28px; display: grid; grid-template-columns: 72px 1fr; gap: 24px; align-items: start; }
         @media (max-width: 720px) {
@@ -667,8 +667,18 @@ function ProjectCard({ project }: { project: ProjectItem }) {
           src={project.image}
           alt={project.name}
           fill
-          sizes="(max-width: 800px) 100vw, 33vw"
+          sizes="(max-width: 800px) 100vw, 50vw"
           style={{ objectFit: "cover" }}
+        />
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            boxShadow:
+              "inset 0 0 0 0.5px rgba(156,213,255,0.16), inset 0 -36px 56px -28px rgba(8,14,28,0.55)",
+          }}
         />
         {project.award && (
           <div
