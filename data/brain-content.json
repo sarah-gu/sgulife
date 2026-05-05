@@ -1,6 +1,19 @@
 {
   "_doc": "Personal landing page content for sgu.life - synthesized from sgu-eight.vercel.app.",
 
+  "now": {
+    "music": {
+      "title": "drop-dead",
+      "artist": "olivia rodrigo",
+      "tag": "on repeat"
+    },
+    "reading": {
+      "title": "tomorrow, and tomorrow, and tomorrow",
+      "author": "gabrielle zevin",
+      "tag": "rereading"
+    }
+  },
+
   "hubs": {
     "projects": {
       "stat": "10 builds",

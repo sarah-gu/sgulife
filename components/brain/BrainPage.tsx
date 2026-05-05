@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ICE,
   type BrainData,
@@ -12,7 +12,10 @@ import {
   type SubDot,
 } from "@/lib/brain";
 import NeuronDetail from "./NeuronDetail";
+import NowReadout from "./NowReadout";
 import { useIsMobile } from "./use-mobile";
+
+const DREAM_IDLE_MS = 40_000;
 
 const Brain3D = dynamic(() => import("./Brain3D"), { ssr: false });
 
@@ -30,10 +33,37 @@ export default function BrainPage({
   const [subScreenPositions, setSubScreenPositions] = useState<SubScreenPos[]>(
     [],
   );
+  const [nowOpen, setNowOpen] = useState(false);
+  const [dreaming, setDreaming] = useState(false);
   const route = initialRoute;
   const router = useRouter();
   const wrapRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Idle → dream mode (only on brain hub page).
+  useEffect(() => {
+    if (route !== "brain") return;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const reset = () => {
+      setDreaming(false);
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => setDreaming(true), DREAM_IDLE_MS);
+    };
+    const events: Array<keyof WindowEventMap> = [
+      "pointermove",
+      "pointerdown",
+      "touchstart",
+      "keydown",
+      "wheel",
+      "scroll",
+    ];
+    events.forEach((ev) => window.addEventListener(ev, reset, { passive: true }));
+    reset();
+    return () => {
+      events.forEach((ev) => window.removeEventListener(ev, reset));
+      if (timer) clearTimeout(timer);
+    };
+  }, [route]);
 
   const onHubClick = (idx: number) => {
     router.push(`/${data.hubs[idx].id}`);
@@ -107,9 +137,15 @@ export default function BrainPage({
             activeHub={hover}
             expandedHub={null}
             hoveredSubId={hoveredSubId}
+            dreaming={dreaming}
           />
 
-          <div
+          <button
+            type="button"
+            aria-label={nowOpen ? "close now readout" : "open now readout"}
+            aria-expanded={nowOpen}
+            data-now-trigger
+            onClick={() => setNowOpen((v) => !v)}
             style={{
               position: "absolute",
               top: isMobile ? 16 : 28,
@@ -118,9 +154,16 @@ export default function BrainPage({
               display: "flex",
               alignItems: "center",
               gap: 10,
+              padding: 0,
+              margin: 0,
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              fontFamily: "inherit",
+              outline: "none",
             }}
           >
-            <div
+            <span
               style={{
                 width: 6,
                 height: 6,
@@ -129,7 +172,7 @@ export default function BrainPage({
                 boxShadow: `0 0 12px ${ICE.accent}`,
               }}
             />
-            <div
+            <span
               style={{
                 fontSize: 11,
                 letterSpacing: 2.6,
@@ -140,8 +183,16 @@ export default function BrainPage({
               }}
             >
               sgu-brain
-            </div>
-          </div>
+            </span>
+          </button>
+
+          {nowOpen && (
+            <NowReadout
+              now={data.now}
+              onClose={() => setNowOpen(false)}
+              isMobile={isMobile}
+            />
+          )}
 
           <div
             style={{
@@ -203,7 +254,7 @@ export default function BrainPage({
               zIndex: 4,
               textAlign: "center",
               pointerEvents: "none",
-              opacity: hover === null ? 1 : 0.4,
+              opacity: dreaming ? 0.4 : hover === null ? 1 : 0.4,
               transition: "opacity 0.4s ease",
               width: "min(640px, calc(100vw - 32px))",
             }}
@@ -345,6 +396,7 @@ export default function BrainPage({
 
           {hover === null && !isMobile && (
             <div
+              key={dreaming ? "dreaming" : "default"}
               style={{
                 position: "absolute",
                 left: "50%",
@@ -370,7 +422,7 @@ export default function BrainPage({
                   background: ICE.hairline,
                 }}
               />
-              drag to rotate · click a hub
+              {dreaming ? "dreaming" : "drag to rotate · click a hub"}
               <span
                 style={{
                   width: 30,

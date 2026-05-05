@@ -297,10 +297,16 @@ export type DetailContent = {
   travel: TravelDetail;
 };
 
+// ── "Now" readout (header easter egg) ───────────────────────────────────
+export type NowMusic = { title: string; artist: string; tag?: string };
+export type NowReading = { title: string; author: string; tag?: string };
+export type NowContent = { music: NowMusic; reading: NowReading };
+
 // ── The full payload ────────────────────────────────────────────────────
 export type BrainData = {
   hubs: Hub[];
   neurons: Record<HubId, NeuronContent>;
   details: DetailContent;
   subDots: SubDot[];
+  now: NowContent;
 };

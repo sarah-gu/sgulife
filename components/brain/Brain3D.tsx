@@ -40,6 +40,7 @@ type Props = {
   activeHub: number | null;
   expandedHub: number | null;
   hoveredSubId: string | null;
+  dreaming?: boolean;
 };
 
 type HubScreen = { x: number; y: number; z: number; idx: number };
@@ -55,12 +56,17 @@ export default function Brain3D({
   activeHub,
   expandedHub,
   hoveredSubId,
+  dreaming = false,
 }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const activeHubRef = useRef<number | null>(null);
   const hoveredHubIdxRef = useRef<number | null>(null);
   const hoveredSubIdRef = useRef<string | null>(null);
   const onSubScreenUpdateRef = useRef(onSubScreenUpdate);
+  const dreamRef = useRef<{ active: boolean; startedAt: number | null }>({
+    active: false,
+    startedAt: null,
+  });
   const [ready, setReady] = useState(false);
   const [hubScreen, setHubScreen] = useState<HubScreen[]>([]);
   const isMobile = useIsMobile();
@@ -76,6 +82,14 @@ export default function Brain3D({
   useEffect(() => {
     onSubScreenUpdateRef.current = onSubScreenUpdate;
   }, [onSubScreenUpdate]);
+
+  useEffect(() => {
+    if (dreaming && !dreamRef.current.active) {
+      dreamRef.current = { active: true, startedAt: performance.now() };
+    } else if (!dreaming) {
+      dreamRef.current = { active: false, startedAt: null };
+    }
+  }, [dreaming]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -580,10 +594,21 @@ export default function Brain3D({
     let raf = 0;
     const t0 = performance.now();
     const v = new THREE.Vector3();
+    const DREAM_STEP = 0.12; // s between sub-dot pulse starts
+    const DREAM_PULSE_DUR = 0.6; // s per individual pulse
+    const DREAM_TAIL_PAUSE = 4; // s of quiet between full passes
+
     const tick = () => {
       const now = performance.now();
       const t = (now - t0) / 1000;
-      if (autoRot) rotY += 0.0018;
+      const dream = dreamRef.current;
+      const dreamActive = dream.active && dream.startedAt !== null;
+      const dreamT = dreamActive ? (now - (dream.startedAt as number)) / 1000 : 0;
+      const dreamCycle =
+        subMeshes.length * DREAM_STEP + DREAM_TAIL_PAUSE;
+      const dreamCycleT = dreamActive ? dreamT % dreamCycle : 0;
+
+      if (autoRot) rotY += dreamActive ? 0.0018 * 0.7 : 0.0018;
       root.rotation.y += (rotY - root.rotation.y) * 0.12;
       root.rotation.x += (rotX - root.rotation.x) * 0.12;
 
@@ -619,15 +644,27 @@ export default function Brain3D({
         const info = subInfos[i];
         const parentHovered = info.parentIdx === cur;
         const selfHovered = hoveredSub === info.id;
-        const targetScale = selfHovered ? 0.26 : parentHovered ? 0.2 : 0.14;
-        const targetOpacity = selfHovered ? 1.0 : parentHovered ? 0.95 : 0.7;
+
+        let dreamAmp = 0;
+        if (dreamActive) {
+          const peakStart = i * DREAM_STEP;
+          const elapsed = dreamCycleT - peakStart;
+          if (elapsed >= 0 && elapsed <= DREAM_PULSE_DUR) {
+            dreamAmp = Math.sin((elapsed / DREAM_PULSE_DUR) * Math.PI);
+          }
+        }
+
+        const baseScale = selfHovered ? 0.26 : parentHovered ? 0.2 : 0.14;
+        const baseOpacity = selfHovered ? 1.0 : parentHovered ? 0.95 : 0.7;
+        const targetScale = baseScale + dreamAmp * 0.18;
+        const targetOpacity = baseOpacity + dreamAmp * 0.4;
         info.currentScale += (targetScale - info.currentScale) * 0.12;
         info.currentColor += (targetOpacity - info.currentColor) * 0.12;
         const pulse = Math.sin(t * 1.0 + i * 0.7) * 0.018;
         const s = info.currentScale + pulse;
         m.scale.set(s, s, 1);
         const matSub = m.material as THREE.SpriteMaterial;
-        matSub.opacity = info.currentColor;
+        matSub.opacity = Math.min(1, info.currentColor);
       });
 
       subLines.forEach((sl, i) => {

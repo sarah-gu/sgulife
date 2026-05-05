@@ -5,6 +5,7 @@ import {
   type Hub,
   type HubId,
   type NeuronContent,
+  type NowContent,
   type SubDot,
   type DetailContent,
 } from "./brain";
@@ -14,6 +15,7 @@ type RawContent = {
   hubs: Record<HubId, { stat: string; recent: string }>;
   neurons: Record<HubId, NeuronContent>;
   details: DetailContent;
+  now: NowContent;
 };
 
 function buildSubDots(details: DetailContent): SubDot[] {
@@ -90,5 +92,6 @@ export function loadBrainData(): BrainData {
     neurons,
     details: c.details,
     subDots: buildSubDots(c.details),
+    now: c.now,
   };
 }
