@@ -309,7 +309,7 @@ export default function BrainPage({
                   textWrap: "balance",
                 }}
               >
-                software engineer in nyc. building something new.
+                software engineer in san francisco. building something new.
               </div>
               <div
                 style={{

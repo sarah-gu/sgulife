@@ -21,7 +21,7 @@
     },
     "about": {
       "stat": "Columbia '24",
-      "recent": "Building · NYC"
+      "recent": "Building · SF"
     },
     "experience": {
       "stat": "Seven roles",
@@ -55,11 +55,11 @@
     },
     "about": {
       "headline": "Software engineer and builder. ☺︎",
-      "summary": "I'm a software engineer in New York. Graduated Columbia in 2024, spent nearly two years at Citadel Securities, and left this April to start working on something new.",
+      "summary": "I'm a software engineer in San Francisco. Graduated Columbia in 2024, spent nearly two years at Citadel Securities, and left this April to start working on something new.",
       "threads": [
         {
           "label": "Now",
-          "text": "Building something new in NYC. Left Citadel Securities in April 2026 to do it."
+          "text": "Building something new in San Francisco. Left Citadel Securities in April 2026 to do it."
         },
         {
           "label": "Education",
@@ -70,7 +70,7 @@
           "text": "New people to build with. Always open to a coffee - please reach out."
         }
       ],
-      "metric": { "value": "NYC", "unit": "based", "sub": "open to coffee" }
+      "metric": { "value": "SF", "unit": "based", "sub": "open to coffee" }
     },
     "experience": {
       "headline": "Past Roles.",
@@ -78,7 +78,7 @@
       "threads": [
         {
           "label": "Now",
-          "text": "Building something new - NYC, since April 2026."
+          "text": "Building something new - San Francisco, since April 2026."
         },
         {
           "label": "Pre-seed bets",
@@ -122,7 +122,7 @@
       "name": "Sarah Gu",
       "tagline": "software engineer and builder ☺︎",
       "paragraphs": [
-        "I'm a software engineer in New York. Graduated Columbia in 2024, then worked at Citadel Securities. Left this April to start working on something new.",
+        "I'm a software engineer in San Francisco. Graduated Columbia in 2024, then worked at Citadel Securities. Left this April to start working on something new.",
         "Earlier on: internships at Phia, Vivid, Microsoft, and Meta, and three summers at MITRE doing ML work.",
         "Outside of that I'm usually running, doing pilates, trying a new food spot, or taking photos with my camera."
       ],
@@ -145,7 +145,7 @@
         "role": "Founder",
         "dates": "April 2026 → present",
         "logo": "/sgu/sarahgu.jpg",
-        "blurb": "NYC. More to share soon.",
+        "blurb": "San Francisco. More to share soon.",
         "details": "Left Citadel in April 2026 to start working on something new. Heads-down on it now - happy to talk about it over coffee if you reach out."
       },
       {

@@ -17,7 +17,7 @@ const cormorant = Cormorant_Garamond({
 
 const SITE_TITLE = "Sarah Gu - software engineer & builder";
 const SITE_DESCRIPTION =
-  "Columbia CS '24 · ex-Citadel Securities · building something new in NYC.";
+  "Columbia CS '24 · ex-Citadel Securities · building something new in San Francisco.";
 const SITE_URL = "https://sgu.life";
 
 export const metadata: Metadata = {

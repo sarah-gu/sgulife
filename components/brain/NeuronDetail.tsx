@@ -472,7 +472,7 @@ function AboutView({ about }: { about: AboutDetail }) {
                 boxShadow: `0 0 8px ${ICE.accent}`,
               }}
             />
-            <span>based in nyc</span>
+            <span>based in san francisco</span>
           </div>
 
           <div className="hd-about-rule" />
