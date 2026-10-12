@@ -68,6 +68,7 @@ export default function Brain3D({
     startedAt: null,
   });
   const [ready, setReady] = useState(false);
+  const [webglFailed, setWebglFailed] = useState(false);
   const [hubScreen, setHubScreen] = useState<HubScreen[]>([]);
   const isMobile = useIsMobile();
 
@@ -113,7 +114,20 @@ export default function Brain3D({
       cameraZForAspect(initialRect.width / initialRect.height),
     );
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    // No WebGL (GPU disabled, sandboxed browser, old hardware): three.js
+    // throws from the constructor. Fall back to a static layout instead of
+    // letting the throw unmount the whole React tree.
+    const renderer = (() => {
+      try {
+        return new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      } catch {
+        return null;
+      }
+    })();
+    if (!renderer) {
+      setWebglFailed(true);
+      return;
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(initialRect.width, initialRect.height);
     renderer.setClearColor(0x000000, 0);
@@ -814,7 +828,17 @@ export default function Brain3D({
             </div>
           );
         })}
-      {!ready && (
+      {webglFailed && (
+        <StaticFallback
+          hubs={hubs}
+          activeHub={activeHub}
+          expandedHub={expandedHub}
+          onHubHover={onHubHover}
+          onHubClick={onHubClick}
+          isMobile={isMobile}
+        />
+      )}
+      {!ready && !webglFailed && (
         <div
           style={{
             position: "absolute",
@@ -831,5 +855,130 @@ export default function Brain3D({
         </div>
       )}
     </div>
+  );
+}
+
+// Shown when a WebGL context cannot be created. Same hub labels, laid out
+// on a ring around a soft glow, still hoverable and clickable.
+function StaticFallback({
+  hubs,
+  activeHub,
+  expandedHub,
+  onHubHover,
+  onHubClick,
+  isMobile,
+}: {
+  hubs: Hub[];
+  activeHub: number | null;
+  expandedHub: number | null;
+  onHubHover: (idx: number | null) => void;
+  onHubClick: (idx: number) => void;
+  isMobile: boolean;
+}) {
+  // Wide, flat ellipse in the empty band between the hero text and the
+  // bottom nav. Units are vmin so the shape holds across viewports.
+  const rx = isMobile ? 36 : 34;
+  const ry = isMobile ? 18 : 16;
+  return (
+    <>
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "54%",
+          width: isMobile ? "52vmin" : "46vmin",
+          height: isMobile ? "52vmin" : "46vmin",
+          transform: "translate(-50%, -50%)",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(156,213,255,0.22) 0%, rgba(156,213,255,0.08) 40%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+      {hubs.map((cat, idx) => {
+        const angle = -Math.PI / 2 + (idx / hubs.length) * Math.PI * 2;
+        const x = Math.cos(angle) * rx;
+        const y = Math.sin(angle) * ry;
+        const isActive = idx === activeHub || idx === expandedHub;
+        return (
+          <button
+            key={cat.id}
+            type="button"
+            data-hub-idx={idx}
+            onMouseEnter={() => onHubHover(idx)}
+            onMouseLeave={() => onHubHover(null)}
+            onFocus={() => onHubHover(idx)}
+            onBlur={() => onHubHover(null)}
+            onClick={() => onHubClick(idx)}
+            style={{
+              position: "absolute",
+              left: `calc(50% + ${x.toFixed(2)}vmin)`,
+              top: `calc(54% + ${y.toFixed(2)}vmin)`,
+              transform: "translate(-50%, -50%)",
+              padding: 6,
+              margin: 0,
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              fontFamily: "var(--font-sans)",
+              textAlign: "center",
+              minWidth: isMobile ? 88 : 110,
+              zIndex: 4,
+              opacity: isActive ? 1 : 0.85,
+              transition: "opacity 0.3s ease",
+              outline: "none",
+            }}
+          >
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: 3,
+                margin: "0 auto 8px",
+                background: ICE.accent,
+                boxShadow: `0 0 ${isActive ? 16 : 10}px ${ICE.accent}`,
+              }}
+            />
+            <div
+              style={{
+                fontSize: isMobile ? 8 : 9,
+                letterSpacing: isMobile ? 1.4 : 1.8,
+                textTransform: "uppercase",
+                color: ICE.accent,
+                opacity: 0.7,
+                fontFamily: "ui-monospace, monospace",
+                marginBottom: 3,
+              }}
+            >
+              {cat.region}
+            </div>
+            <div
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: isMobile ? 13 : 16,
+                lineHeight: 1.15,
+                color: ICE.hi,
+                letterSpacing: 0.2,
+                fontStyle: "italic",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {cat.label}
+            </div>
+            <div
+              style={{
+                fontSize: isMobile ? 9 : 10,
+                color: ICE.low,
+                marginTop: 3,
+                letterSpacing: 0.4,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {cat.stat}
+            </div>
+          </button>
+        );
+      })}
+    </>
   );
 }

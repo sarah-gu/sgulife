@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   ICE,
   type BrainData,
@@ -94,11 +94,14 @@ export default function BrainPage({
     ? (subScreenPositions.find((p) => p.id === hoveredSubId) ?? null)
     : null;
 
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-  });
+  // Client-only. The page is prerendered at build time, so computing the
+  // date during render bakes the build date into the HTML and trips a
+  // hydration mismatch on every later visit. Server snapshot is empty.
+  const today = useSyncExternalStore(
+    subscribeNoop,
+    getTodayLabel,
+    () => "",
+  );
 
   return (
     <div
@@ -207,7 +210,7 @@ export default function BrainPage({
               color: ICE.low,
             }}
           >
-            <div>{today}</div>
+            <div>{today || "\u00a0"}</div>
             <div
               style={{
                 marginTop: 6,
@@ -467,6 +470,18 @@ export default function BrainPage({
       )}
     </div>
   );
+}
+
+function subscribeNoop() {
+  return () => {};
+}
+
+function getTodayLabel() {
+  return new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 function HoverChip({ hub, compact = false }: { hub: Hub; compact?: boolean }) {
