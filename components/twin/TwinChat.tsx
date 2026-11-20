@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import posthog from "posthog-js";
 import { OPENERS } from "@/lib/twin/openers";
 import styles from "./twin.module.css";
 
@@ -65,7 +66,16 @@ export default function TwinChat() {
   const [status, setStatus] = useState<"" | "Delivered" | "Not Delivered">("");
   const [started, setStarted] = useState("");
   const nextId = useRef(1);
-  const visit = useRef(""); // random id for this visit, so its exchanges group together in analytics
+  // Id for this visit, so its exchanges group together in analytics. It is the visitor's anonymous
+  // analytics id when analytics is running, which ties the conversation to their page views.
+  const visit = useRef("");
+  const visitId = () => {
+    if (!visit.current) {
+      const fromAnalytics = posthog.__loaded ? posthog.get_distinct_id() : "";
+      visit.current = /^[a-zA-Z0-9-]{8,64}$/.test(fromAnalytics) ? fromAnalytics : crypto.randomUUID();
+    }
+    return visit.current;
+  };
   const run = useRef<AbortController | null>(null);
   const latest = useRef<Msg[]>([]);
   const scroller = useRef<HTMLDivElement>(null);
@@ -138,7 +148,7 @@ export default function TwinChat() {
       const pending = fetch("/api/twin", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ turns, cid: (visit.current ||= crypto.randomUUID()) }),
+        body: JSON.stringify({ turns, cid: visitId() }),
         signal: ctl.signal,
       });
       await sleep(500, ctl.signal);
