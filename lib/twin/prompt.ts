@@ -4,11 +4,12 @@
 // repeating it. So it holds only what Sarah has already published on this site, a description of
 // how she texts, and example texts she has approved. The examples are not in the repo: they come
 // from the TWIN_VOICE_EXAMPLES environment variable (or data/twin-voice.local.txt in local dev).
-// A short personal synopsis she has approved comes from TWIN_PERSONAL_FACTS the same way.
+// The personal synopsis lives in ./personal.ts, which Sarah edits directly.
 
 import "server-only"; // the build fails if this module is ever pulled into browser code
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { PERSONAL } from "./personal";
 
 const INSTRUCTIONS = `You are the texting twin on Sarah Gu's website: an AI that replies the way Sarah texts.
 A visitor to the site is texting "Sarah". You will see the conversation so far. Write the next thing Sarah sends.
@@ -73,8 +74,7 @@ let cached: string | null = null;
 export function twinSystemPrompt(): string {
   if (cached !== null) return cached;
   const examples = loadPrivate("TWIN_VOICE_EXAMPLES", "twin-voice.local.txt");
-  // A short synopsis of her life that she has approved for the twin to draw on (TWIN_PERSONAL_FACTS).
-  const personal = loadPrivate("TWIN_PERSONAL_FACTS", "twin-personal.local.txt");
+  const personal = PERSONAL;
   cached = [
     INSTRUCTIONS,
     VOICE,
