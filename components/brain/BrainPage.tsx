@@ -311,22 +311,6 @@ export default function BrainPage({
               >
                 software engineer in san francisco. building something new.
               </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: isMobile ? 11 : 12,
-                  lineHeight: 1.5,
-                  color: ICE.low,
-                  fontWeight: 300,
-                  fontStyle: "italic",
-                  letterSpacing: 0.2,
-                  maxWidth: 480,
-                  margin: "6px auto 0",
-                  textWrap: "balance",
-                }}
-              >
-                currently obsessed with the idea of a digital brain.
-              </div>
               {!isMobile && (
                 <div
                   style={{
