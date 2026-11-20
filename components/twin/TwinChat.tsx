@@ -68,6 +68,7 @@ export default function TwinChat() {
   const run = useRef<AbortController | null>(null);
   const latest = useRef<Msg[]>([]);
   const scroller = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
   const field = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => { latest.current = msgs; }, [msgs]);
@@ -76,6 +77,27 @@ export default function TwinChat() {
     const el = scroller.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [msgs, typing]);
+
+  // Keep the screen fitted to the visible area. When the phone keyboard opens, the visible area
+  // shrinks and the browser scrolls the page; tracking it keeps the header pinned at the top and
+  // the input sitting on the keyboard.
+  useEffect(() => {
+    const vv = window.visualViewport;
+    const el = stage.current;
+    if (!vv || !el) return;
+    const fit = () => {
+      el.style.setProperty("--vv-height", `${vv.height}px`);
+      el.style.setProperty("--vv-top", `${vv.offsetTop}px`);
+      if (scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight;
+    };
+    fit();
+    vv.addEventListener("resize", fit);
+    vv.addEventListener("scroll", fit);
+    return () => {
+      vv.removeEventListener("resize", fit);
+      vv.removeEventListener("scroll", fit);
+    };
+  }, []);
 
   // She texts first: dots, then one of the openers in lib/twin/openers.ts.
   useEffect(() => {
@@ -192,7 +214,7 @@ export default function TwinChat() {
   );
 
   return (
-    <div className={styles.stage}>
+    <div className={styles.stage} ref={stage}>
       <div className={styles.window}>
         {/* Desktop only: the conversation list */}
         <aside className={styles.sidebar}>
