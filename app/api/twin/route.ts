@@ -7,6 +7,8 @@
 import { spawn } from "node:child_process";
 import { tmpdir } from "node:os";
 import Anthropic from "@anthropic-ai/sdk";
+import { after } from "next/server";
+import { flushExchanges, recordExchange } from "@/lib/twin/observe";
 import { twinSystemPrompt, twinUserMessage, type TwinTurn } from "@/lib/twin/prompt";
 
 export const runtime = "nodejs";
@@ -160,11 +162,24 @@ export async function POST(req: Request) {
   if (!sameOrigin(req)) return json({ error: "forbidden" }, 403);
   if (!allowed(clientIp(req))) return json({ error: "slow down" }, 429);
 
-  const turns = parseTurns(await readBody(req));
+  const body = await readBody(req);
+  const turns = parseTurns(body);
   if (!turns) return json({ error: "bad request" }, 400);
 
+  // The page sends a random id per visit so one visitor's exchanges group into a conversation.
+  const cid = (body as { cid?: unknown }).cid;
+  const conversationId = typeof cid === "string" && /^[a-zA-Z0-9-]{8,64}$/.test(cid) ? cid : crypto.randomUUID();
+  const started = Date.now();
+  const record = (reply: { reaction: string | null; texts: string[] }, extra: { inputTokens?: number; outputTokens?: number; error?: string } = {}) =>
+    recordExchange({ conversationId, turns, ...reply, model: MODEL, latencySeconds: (Date.now() - started) / 1000, ...extra });
+  after(flushExchanges); // send analytics once the reply is on its way
+
   try {
-    if (DEV_USE_PLAN) return json(toReply(await viaClaudeCli(twinSystemPrompt(), twinUserMessage(turns))));
+    if (DEV_USE_PLAN) {
+      const reply = toReply(await viaClaudeCli(twinSystemPrompt(), twinUserMessage(turns)));
+      record(reply);
+      return json(reply);
+    }
 
     const response = await client.beta.messages.create({
       model: MODEL,
@@ -178,10 +193,18 @@ export async function POST(req: Request) {
       messages: [{ role: "user", content: twinUserMessage(turns) }],
     });
 
-    if (response.stop_reason === "refusal") return json({ reaction: null, texts: ["lol idk what to say to that"] });
+    const usage = { inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens };
+    if (response.stop_reason === "refusal") {
+      const reply = { reaction: null, texts: ["lol idk what to say to that"] };
+      record(reply, { ...usage, error: "model declined" });
+      return json(reply);
+    }
     const text = response.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join("\n");
-    return json(toReply(text));
+    const reply = toReply(text);
+    record(reply, usage);
+    return json(reply);
   } catch (error) {
+    record({ reaction: null, texts: [] }, { error: error instanceof Error ? error.name : "unknown error" });
     if (error instanceof Anthropic.RateLimitError) return json({ error: "busy" }, 429);
     if (error instanceof Anthropic.AuthenticationError) {
       console.error("twin: no valid Anthropic credentials on the server");

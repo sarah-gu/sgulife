@@ -65,6 +65,7 @@ export default function TwinChat() {
   const [status, setStatus] = useState<"" | "Delivered" | "Not Delivered">("");
   const [started, setStarted] = useState("");
   const nextId = useRef(1);
+  const visit = useRef(""); // random id for this visit, so its exchanges group together in analytics
   const run = useRef<AbortController | null>(null);
   const latest = useRef<Msg[]>([]);
   const scroller = useRef<HTMLDivElement>(null);
@@ -137,7 +138,7 @@ export default function TwinChat() {
       const pending = fetch("/api/twin", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ turns }),
+        body: JSON.stringify({ turns, cid: (visit.current ||= crypto.randomUUID()) }),
         signal: ctl.signal,
       });
       await sleep(500, ctl.signal);
