@@ -10,8 +10,9 @@
     "gen:world-paths": "node scripts/generate-world-paths.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.11.0",
     "@types/three": "^0.184.0",
-    "next": "16.1.6",
+    "next": "16.4.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "three": "^0.184.0"
@@ -26,7 +27,7 @@
     "@types/topojson-specification": "^1.0.5",
     "d3-geo": "^3.1.1",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "16.4.6",
     "tailwindcss": "^4",
     "topojson-client": "^3.1.0",
     "typescript": "^5",

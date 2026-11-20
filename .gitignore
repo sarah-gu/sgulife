@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# twin: example texts for local dev only (production reads TWIN_VOICE_EXAMPLES)
+/data/twin-voice.local.txt
